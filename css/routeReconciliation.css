@@ -1,0 +1,6 @@
+.rrSearchCon input{
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 0 10px;
+    margin-right: 10px;
+}

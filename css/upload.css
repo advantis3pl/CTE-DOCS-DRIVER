@@ -1,0 +1,84 @@
+.expandCard{
+    overflow: hidden;
+    transition: all .2s linear;
+    height: 42px;
+}
+.expandCardTitle{
+    cursor: pointer;
+    background-color: rgb(220, 236, 255);
+}
+
+.expandCardTitle:hover{
+    background-color: rgb(159, 171, 187);
+}
+
+.userTable tr td{
+    font-size: .9rem;
+}
+.table_icons{
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.table_icons:hover{
+    color: red;
+}
+
+
+.updateForm{
+    
+}
+
+.updateFormCon{
+    width: 700px;
+    margin: 0 auto;
+}
+
+.updateFormControl{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    margin: 5px 0;
+}
+
+.updateFormControl label{
+    width: 20%;
+}
+.updateFormControl input{
+    border-radius: 5px;
+    border: 1px solid gray;
+    padding: 5px;
+}
+
+.iw60{
+    width: 60%;
+}
+
+.iw80{
+    width: 80%;
+}
+
+.updateFormControl button{
+    width: 18%;
+    margin-left: 2%;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.updateFormControl textarea{
+    width: 80%;
+    padding: 5px;
+}
+
+
+.updateFormActions{
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.updateFormActions button{
+    width: 30%;
+}

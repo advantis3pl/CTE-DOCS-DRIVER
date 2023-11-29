@@ -1,0 +1,61 @@
+.manageStpCon{
+    display: flex;
+    width: 100%;
+}
+.shiptopartyInfo{
+    width: 50%;
+    margin-right: 20px;
+}
+.shippingHolidays{
+    width: 50%;
+}
+
+.shippingHolidaySub{
+    margin-bottom: 20px;
+}
+
+.shiptopartyContainer{
+    width: 100%;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-bottom: 1px solid gray;
+}
+.shiptopartyContainer table{
+    width: 100%;
+}
+
+.shiptopartyContainer table tr td{
+    text-align: center;
+}
+
+.shiptopartyContainer table tr td input{
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+}
+
+.shiptopartyContainer table tr td select{
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+}
+
+@media (max-width: 799px) {
+    .manageStpCon{
+        flex-direction: column;
+    }
+    .shiptopartyInfo{
+        width: 100%;
+        margin: 0;
+    }
+    .shippingHolidays{
+        width: 100%;
+        margin: 0;
+    }
+}
