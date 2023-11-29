@@ -219,10 +219,6 @@ include("partials/navbar.php");
             </div>
         </div>
     </div>
-
-
-
-
 </div>
 
 <script src="js/uploadSAP.js"></script>
