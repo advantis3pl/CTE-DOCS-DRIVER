@@ -367,6 +367,5 @@ function closeVUForm(){
     }else{
         const popUpContainer6 = document.getElementById("viewUserPopUp");
         popUpContainer6.style.display = "none";
-    }
-    
+    }  
 }

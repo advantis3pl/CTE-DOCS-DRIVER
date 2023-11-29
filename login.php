@@ -60,9 +60,7 @@ if(isset($_SESSION['user_id'])){
         </div>
 
         <footer class="login__footer">
-            <input type="submit" value="Login" name="login">
-
-            <p><span class="icon icon--info">?</span><a href="#">Forgot Password</a></p>
+            <input class="w-100" type="submit" value="Login" name="login">
         </footer>
 
         <header class="login__header">
@@ -70,6 +68,7 @@ if(isset($_SESSION['user_id'])){
         </header>
 
     </form>
+
 
     <?php
 

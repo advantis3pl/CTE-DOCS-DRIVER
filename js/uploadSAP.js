@@ -33,7 +33,35 @@ sapForm.addEventListener('submit', function (event) {
                         formatedArray = convertCellstoDateSap(formatedArray);
                         formatedArray = convertNullToEmptyString(formatedArray);
                         formatedArray = convertEmptyToEmptyStringSAP(formatedArray);
-                        console.log(formatedArray);
+
+                        
+                        const dnValRes = ValidateDeliveryNumbers(formatedArray);
+                        
+                        //console.log(formatedArray);
+
+                        var xhr2 = new XMLHttpRequest();
+                        xhr2.open("POST", "backend/upload/uploadReport.php", true);
+                        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhr2.onreadystatechange = function () {
+                            if (xhr2.readyState === 4) {
+                                if (xhr2.status === 200) {
+                                    let res2 = xhr2.responseText.toString();
+                                    console.log(res2);
+                                    
+                                } else {
+                                    console.log("failed");
+                                   //request failed 
+                                }
+                            }
+                        };
+                        const data = {
+                            type: "SAP",
+                            report: JSON.stringify(formatedArray)
+                        };
+                        var formData2 = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
+                        xhr2.send(formData2);
+
+
 
                     }else{
                         sapReportError.innerText = reportValidation.body;

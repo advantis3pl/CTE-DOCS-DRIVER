@@ -234,3 +234,31 @@ function convertEmptyToEmptyStringFactory(arr) {
         )
     );
 }
+
+function ValidateDeliveryNumbers(array) {
+    var deliveryNumbers = array.map(function(innerArray) {
+        return innerArray[0];
+    });
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open("POST", "backend/upload/validateDN.php", true);
+    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr2.onreadystatechange = function () {
+        if (xhr2.readyState === 4) {
+            if (xhr2.status === 200) {
+                let res2 = xhr2.responseText.toString();
+                //console.log(res2);
+                
+            } else {
+                console.log("failed");
+               //request failed 
+            }
+        }
+    };
+    const data = {
+        report: JSON.stringify(deliveryNumbers)
+    };
+    var formData2 = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
+    xhr2.send(formData2);
+
+}
