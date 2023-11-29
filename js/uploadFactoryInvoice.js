@@ -30,6 +30,8 @@ factoryForm.addEventListener('submit', function (event) {
 
                         formatedArray = convertCellstoDateFactory(formatedArray);
                         formatedArray = removeDuplicates(formatedArray);
+                        formatedArray = convertNullToEmptyString(formatedArray);
+                        formatedArray = convertEmptyToEmptyStringFactory(formatedArray);
 
                         console.log(formatedArray);
 
@@ -162,7 +164,7 @@ function convertCellstoDateFactory(array){
         if (sendingDate != null) {
             array[x][6] = convertExcelDateToColomboTime(sendingDate);
         }
-        if (productionTransfer != null) {
+        if (productionTransfer != null && productionTransfer != "SPD") {
             array[x][7] = convertExcelDateTimeToColomboTime(productionTransfer);
         }
     }
@@ -184,14 +186,26 @@ function convertExcelDateToColomboTime(excelDate) {
 
 }
 
+
 function convertExcelDateTimeToColomboTime(excelTime) {
-    const millisecondsInDay = excelTime * 24 * 60 * 60 * 1000;
-    const jsTime = new Date(0, 0, 1, 0, 0, 0, millisecondsInDay);
-    const colomboTime = new Date(jsTime);
-    colomboTime.setMinutes(jsTime.getMinutes() - jsTime.getTimezoneOffset() + 330); 
-    const timePart = `${colomboTime.getHours()}:${colomboTime.getMinutes()}:${colomboTime.getSeconds()}`;
-    return timePart;
+    var millisecondsInDay = 24 * 60 * 60 * 1000;
+    var milliseconds = excelTime * millisecondsInDay;
+
+    var date = new Date(milliseconds);
+
+    var hours = date.getUTCHours();
+    var minutes = date.getUTCMinutes();
+    var seconds = date.getUTCSeconds();
+
+    var formattedTime = padZero(hours) + ':' + padZero(minutes) + ':' + padZero(seconds);
+
+    return formattedTime;
 }
+
+function padZero(num) {
+    return (num < 10 ? '0' : '') + num;
+}
+
 
 function removeDuplicates(array) {
     const uniqueDeliveryNumbers = {};
@@ -207,4 +221,16 @@ function removeDuplicates(array) {
     }
 
     return resultArray;
+}
+
+function convertNullToEmptyString(arr) {
+    return arr.map(element => (element === undefined || element === null) ? "" : element);
+}
+
+function convertEmptyToEmptyStringFactory(arr) {
+    return arr.map(innerArray =>
+        Array.from({ length: 9 }, (_, index) =>
+          innerArray[index] === undefined ? "" : innerArray[index]
+        )
+    );
 }

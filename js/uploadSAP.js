@@ -30,7 +30,9 @@ sapForm.addEventListener('submit', function (event) {
                         }
                         
                         formatedArray = removeDuplicates(formatedArray);
-                        
+                        formatedArray = convertCellstoDateSap(formatedArray);
+                        formatedArray = convertNullToEmptyString(formatedArray);
+                        formatedArray = convertEmptyToEmptyStringSAP(formatedArray);
                         console.log(formatedArray);
 
                     }else{
@@ -135,10 +137,30 @@ function validateSAPReport(array){
 }
 
 
+function convertCellstoDateSap(array){
+    for(var x = 0; x < array.length; x++){
+        let invoiceDate = array[x][3];
+        if (invoiceDate != null) {
+            array[x][3] = convertExcelDateToColomboTime(invoiceDate);
+        }
+    }
+    return array;
+}
+
+
 function formatArray(array){
     var formatedArray = [];
     for(var i = 1; i < formatedArray.length; i++){
         formatedArray.add(array[i]);
     }
     return formatedArray;
+}
+
+
+function convertEmptyToEmptyStringSAP(arr) {
+    return arr.map(innerArray =>
+        Array.from({ length: 6 }, (_, index) =>
+          innerArray[index] === undefined ? "" : innerArray[index]
+        )
+    );
 }
