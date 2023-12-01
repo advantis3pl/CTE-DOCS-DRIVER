@@ -37,7 +37,7 @@
     background-color: rgb(255, 255, 255);
 }
 .routeBarRow:hover{
-    background-color: rgb(155, 215, 255);
+    background-color:#cfcfcf;
 }
 .routeTableBar{
     border: 1px solid gray;

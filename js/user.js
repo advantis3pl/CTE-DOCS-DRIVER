@@ -112,8 +112,7 @@ function updateUserDetails(){
                                 if (xhr2.readyState === 4) {
                                     if (xhr2.status === 200) {
                                         let res2 = xhr2.responseText.toString()
-                                        console.log(res2);
-                                        if(res2 == "200"){
+                                        if(res2.trim() == "200"){
                                             alert("User updated successfully!");
                                             vu_fixed_fname.value = firstName.value;
                                             vu_fixed_lname.value = lastName.value;
@@ -167,34 +166,23 @@ function updateUserDetails(){
         
                 }else{
                     vuPopUpLoader.style.display = "flex";
-                    var xhr2 = new XMLHttpRequest();
-                    xhr2.open("POST", "backend/user.php", true);
-                    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhr2.onreadystatechange = function () {
-                        if (xhr2.readyState === 4) {
-                            if (xhr2.status === 200) {
-                                let res2 = xhr2.responseText.toString()
-                                console.log(res2);
-                                if(res2 == "200"){
-                                    alert("User updated successfully!");
-                                    vu_fixed_fname.value = firstName.value;
-                                    vu_fixed_lname.value = lastName.value;
-                                    vu_fixed_username.value = username.value;
-                                    vu_fixed_usertype.value = usertype.value;
-                                    vu_fixed_status.value = status.value;
-                                    vuPopUpLoader.style.display = "none";
-                                    formChanges.value = "1";
-        
-                                }else{
-                                    alert("Something went wrong. Try again!");
-                                    firstName.value = vu_fixed_fname.value;
-                                    lastName.value = vu_fixed_lname.value;
-                                    username.value = vu_fixed_username.value;
-                                    usertype.value = vu_fixed_usertype.value;
-                                    status.value = vu_fixed_status.value;
-                                    vuPopUpLoader.style.display = "none";
-                                }
-                            } else {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "backend/user.php", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            let res = xhr.responseText
+                            if(res.trim() == "200"){
+                                console.log(res);
+                                alert("User updated successfully!");
+                                vu_fixed_fname.value = firstName.value;
+                                vu_fixed_lname.value = lastName.value;
+                                vu_fixed_username.value = username.value;
+                                vu_fixed_usertype.value = usertype.value;
+                                vu_fixed_status.value = status.value;
+                                vuPopUpLoader.style.display = "none";
+                                formChanges.value = "1";
+                            }else{
                                 alert("Something went wrong. Try again!");
                                 firstName.value = vu_fixed_fname.value;
                                 lastName.value = vu_fixed_lname.value;
@@ -203,8 +191,18 @@ function updateUserDetails(){
                                 status.value = vu_fixed_status.value;
                                 vuPopUpLoader.style.display = "none";
                             }
+                            
+                        }else if(xhr.readyState === XMLHttpRequest.DONE && xhr.status !== 200){
+                            alert("Something went wrong. Try again!");
+                            firstName.value = vu_fixed_fname.value;
+                            lastName.value = vu_fixed_lname.value;
+                            username.value = vu_fixed_username.value;
+                            usertype.value = vu_fixed_usertype.value;
+                            status.value = vu_fixed_status.value;
+                            vuPopUpLoader.style.display = "none";
                         }
                     };
+                    
                     const data2 = {
                         action: "update",
                         fname: firstName.value,
@@ -215,7 +213,7 @@ function updateUserDetails(){
                         selectedUserId: vu_selectedUserId.value
                     };
                     var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
-                    xhr2.send(formData2);
+                    xhr.send(formData2);
                 }
             }
 
@@ -258,6 +256,7 @@ function addUser(){
 
         validateUsername(username.value)
         .then((usernameVal) => {
+            
             if(usernameVal == "200"){
 
                 var xhr2 = new XMLHttpRequest();
@@ -267,7 +266,7 @@ function addUser(){
                     if (xhr2.readyState === 4) {
                         if (xhr2.status === 200) {
                             let res2 = xhr2.responseText.toString()
-                            if(res2 == "200"){
+                            if(res2.trim() == "200"){
                                 window.location.reload();
                             }else{
                                 auPopUpLoader.style.display = "none";
@@ -346,7 +345,7 @@ function validateUsername(username) {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     let res = xhr.responseText.toString();
-                    resolve(res);
+                    resolve(res.trim());
                 } else {
                     reject("500");
                 }
@@ -367,5 +366,6 @@ function closeVUForm(){
     }else{
         const popUpContainer6 = document.getElementById("viewUserPopUp");
         popUpContainer6.style.display = "none";
-    }  
+    }
+    
 }

@@ -34,34 +34,54 @@ sapForm.addEventListener('submit', function (event) {
                         formatedArray = convertNullToEmptyString(formatedArray);
                         formatedArray = convertEmptyToEmptyStringSAP(formatedArray);
 
-                        
-                        const dnValRes = ValidateDeliveryNumbers(formatedArray);
-                        
-                        //console.log(formatedArray);
+                        ValidateDeliveryNumbers(formatedArray)
+                        .then(response => {
+                            let resObject = JSON.parse(response);
+                            if(resObject.requestStatus == 200){
 
-                        var xhr2 = new XMLHttpRequest();
-                        xhr2.open("POST", "backend/upload/uploadReport.php", true);
-                        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        xhr2.onreadystatechange = function () {
-                            if (xhr2.readyState === 4) {
-                                if (xhr2.status === 200) {
-                                    let res2 = xhr2.responseText.toString();
-                                    console.log(res2);
-                                    
-                                } else {
-                                    console.log("failed");
-                                   //request failed 
-                                }
+                                var xhr2 = new XMLHttpRequest();
+                                xhr2.open("POST", "backend/upload/uploadReport.php", true);
+                                xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                                xhr2.onreadystatechange = function () {
+                                    if (xhr2.readyState === 4) {
+                                        if (xhr2.status === 200) {
+                                            let res2 = xhr2.responseText.toString();
+                                            let resObject2 = JSON.parse(res2);
+                                            if(resObject2.requestStatus == 200){
+                                                alert(resObject2.message);
+                                                sapReportLoader.classList.remove("d-flex");
+                                                sapReportLoader.classList.add("d-none");
+                                            }else{
+                                                sapReportError.innerText = resObject2.message;
+                                                sapReportLoader.classList.remove("d-flex");
+                                                sapReportLoader.classList.add("d-none");
+                                            }
+                                            
+                                        } else {
+                                            sapReportError.innerText = "Something went wrong!";
+                                            sapReportLoader.classList.remove("d-flex");
+                                            sapReportLoader.classList.add("d-none");
+                                        }
+                                    }
+                                };
+                                const data = {
+                                    type: "SAP",
+                                    report: JSON.stringify(formatedArray)
+                                };
+                                var formData2 = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
+                                xhr2.send(formData2);
+
+                            }else{
+                                sapReportError.innerText = resObject.message;
+                                sapReportLoader.classList.remove("d-flex");
+                                sapReportLoader.classList.add("d-none");
                             }
-                        };
-                        const data = {
-                            type: "SAP",
-                            report: JSON.stringify(formatedArray)
-                        };
-                        var formData2 = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
-                        xhr2.send(formData2);
-
-
+                        })
+                        .catch(error => {
+                            sapReportError.innerText = "Something went wrong!";
+                            sapReportLoader.classList.remove("d-flex");
+                            sapReportLoader.classList.add("d-none");
+                        });
 
                     }else{
                         sapReportError.innerText = reportValidation.body;
@@ -90,7 +110,6 @@ sapForm.addEventListener('submit', function (event) {
 
 function getDataFromExcel(input){
     try {
-
         return new Promise((resolve, reject) => {
             var report = input.files[0];
             var reader = new FileReader();

@@ -33,7 +33,54 @@ factoryForm.addEventListener('submit', function (event) {
                         formatedArray = convertNullToEmptyString(formatedArray);
                         formatedArray = convertEmptyToEmptyStringFactory(formatedArray);
 
-                        console.log(formatedArray);
+                        ValidateDeliveryNumbers(formatedArray)
+                        .then(response => {
+                            let resObject = JSON.parse(response);
+                            if(resObject.requestStatus == 200){
+
+                                var xhr2 = new XMLHttpRequest();
+                                xhr2.open("POST", "backend/upload/uploadFactory.php", true);
+                                xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                                xhr2.onreadystatechange = function () {
+                                    if (xhr2.readyState === 4) {
+                                        if (xhr2.status === 200) {
+                                            let res2 = xhr2.responseText.toString();
+                                            let resObject2 = JSON.parse(res2);
+                                            if(resObject2.requestStatus == 200){
+                                                alert(resObject2.message);
+                                                factoryReportLoader.classList.remove("d-flex");
+                                                factoryReportLoader.classList.add("d-none");
+                                            }else{
+                                                factoryReportError.innerText = resObject2.message;
+                                                factoryReportLoader.classList.remove("d-flex");
+                                                factoryReportLoader.classList.add("d-none");
+                                            }
+                                            
+                                        } else {
+                                            factoryReportError.innerText = "Something went wrong!";
+                                            factoryReportLoader.classList.remove("d-flex");
+                                            factoryReportLoader.classList.add("d-none");
+                                        }
+                                    }
+                                };
+                                const data = {
+                                    type: "Factory",
+                                    report: JSON.stringify(formatedArray)
+                                };
+                                var formData2 = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
+                                xhr2.send(formData2);
+
+                            }else{
+                                factoryReportError.innerText = resObject.message;
+                                factoryReportLoader.classList.remove("d-flex");
+                                factoryReportLoader.classList.add("d-none");
+                            }
+                        })
+                        .catch(error => {
+                            factoryReportError.innerText = "Something went wrong!";
+                            factoryReportLoader.classList.remove("d-flex");
+                            factoryReportLoader.classList.add("d-none");
+                        });
 
 
                     }else{
@@ -235,30 +282,39 @@ function convertEmptyToEmptyStringFactory(arr) {
     );
 }
 
+
+
+
 function ValidateDeliveryNumbers(array) {
+
     var deliveryNumbers = array.map(function(innerArray) {
         return innerArray[0];
     });
+    var response = {
+        'requestStatus': 500,
+        'message': 'Something went wrong!'
+    };
+    var jsonString = JSON.stringify(response);
 
-    var xhr2 = new XMLHttpRequest();
-    xhr2.open("POST", "backend/upload/validateDN.php", true);
-    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr2.onreadystatechange = function () {
-        if (xhr2.readyState === 4) {
-            if (xhr2.status === 200) {
-                let res2 = xhr2.responseText.toString();
-                //console.log(res2);
-                
-            } else {
-                console.log("failed");
-               //request failed 
+    return new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "backend/upload/validateDN.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    let res = xhr.responseText.toString();
+                    resolve(res.trim());
+                } else {
+                    resolve(jsonString);
+                }
             }
-        }
-    };
-    const data = {
-        report: JSON.stringify(deliveryNumbers)
-    };
-    var formData2 = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
-    xhr2.send(formData2);
+        };
+        const data = {
+            report: JSON.stringify(deliveryNumbers)
+        };
+        var formData2 = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
+        xhr.send(formData2);
+    });
 
 }

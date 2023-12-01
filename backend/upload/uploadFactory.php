@@ -12,11 +12,10 @@ isset($_POST['report'])){
     date_default_timezone_set('Asia/Colombo');
     $currentDate = date('Y-n-j');
     $currentTime = date('H:i:s');
-
     
     $reportId = $reportId = substr(md5(uniqid(rand(), true)), 0, 20);
 
-    
+
     $clientsThatNotAvailable = array();
     $routes = array();
 
@@ -39,7 +38,6 @@ isset($_POST['report'])){
             $cl = $result->fetch_assoc();
             $routes[] = $cl['route'];
         }
-
     }
 
 
@@ -51,7 +49,6 @@ isset($_POST['report'])){
         if($stmt->execute()){
 
             $counter = 0;
-
             $arrayCounter = 0; 
 
             foreach ($report as $data) {
@@ -61,7 +58,7 @@ isset($_POST['report'])){
 
                 $delivery = htmlspecialchars($data[0]);
                 $delivery = mysqli_real_escape_string($conn, $delivery);
-        
+
                 $stpCode = htmlspecialchars($data[1]);
                 $stpCode = mysqli_real_escape_string($conn, $stpCode);
         
@@ -76,7 +73,16 @@ isset($_POST['report'])){
         
                 $createdBy = htmlspecialchars($data[5]);
                 $createdBy = mysqli_real_escape_string($conn, $createdBy);
-        
+                
+                $sendingDate = htmlspecialchars($data[6]);
+                $sendingDate = mysqli_real_escape_string($conn, $sendingDate);
+                
+                $productionTransfer = htmlspecialchars($data[7]);
+                $productionTransfer = mysqli_real_escape_string($conn, $productionTransfer);
+                
+                $remark = htmlspecialchars($data[8]);
+                $remark = mysqli_real_escape_string($conn, $remark);
+
                 $pendingTime = $currentTime;
                 $pendingDate = $currentDate;
                 $ackStatus = "pending";
@@ -86,10 +92,11 @@ isset($_POST['report'])){
                 stp_location,created_by,sending_date,production_transfer,remark,ack_status,updated_status,
                 return_status,pending_time,pending_date,assigned_time,assigned_date,scanned_time,scanned_date,route) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 $s = $conn->prepare($q);
-                $s->bind_param('sssssssssssssssssssi', $reportId,$delivery,$stpCode,$stpName,$invoiceDate,$stpLocation,$createdBy,$empty,$empty,$empty,$ackStatus,$empty,$empty,$pendingTime,$pendingDate,$empty,$empty,$empty,$empty,$currentRoute);
+                $s->bind_param('sssssssssssssssssssi', $reportId,$delivery,$stpCode,$stpName,$invoiceDate,$stpLocation,$createdBy,$sendingDate,$productionTransfer,$remark,$ackStatus,$empty,$empty,$pendingTime,$pendingDate,$empty,$empty,$empty,$empty,$currentRoute);
                 if($s->execute()){
                     $counter++;
                 }
+
             }
 
             if(count($report) == $counter){
@@ -106,7 +113,6 @@ isset($_POST['report'])){
                 echo json_encode($response);
             }
 
-
         }else{
             $response = array(
                 'requestStatus' => 500,
@@ -115,17 +121,14 @@ isset($_POST['report'])){
             echo json_encode($response);
         }
 
-
     }else{
-
-        //client codes not found
         $response = array(
             'requestStatus' => 500,
             'message' => 'Unkown ship-to-party codes : ' . implode(', ', $clientsThatNotAvailable)
         );
         echo json_encode($response);
-
     }
+
 }
 
 ?>

@@ -221,8 +221,8 @@ include("partials/navbar.php");
     </div>
 </div>
 
-<script src="js/uploadSAP.js"></script>
-<script src="js/uploadFactoryInvoice.js"></script>
+<script src="js/uploadSAP.js?v=2"></script>
+<script src="js/uploadFactoryInvoice.js?v=2"></script>
 
 <?php
 include("partials/footer.php");

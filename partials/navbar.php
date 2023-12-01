@@ -55,7 +55,7 @@ if(isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="css/home.css?v=4" />
     <link rel="stylesheet" href="css/cards.css?v=1.5" />
     <link rel="stylesheet" href="css/profile.css" />
-    <link rel="stylesheet" href="css/ras.css?v=3.2" />
+    <link rel="stylesheet" href="css/ras.css?v=4" />
     <link rel="stylesheet" href="css/stpReport.css?v=2" />
     <link rel="stylesheet" href="css/manageStp.css?v=2" />
     <link rel="stylesheet" href="css/routeReconciliation.css" />
@@ -85,7 +85,7 @@ if(isset($_SESSION['user_id'])){
     <script src="js/home.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/cards.js?v=1.2"></script>
-    <script src="js/ras.js?v=1.1"></script>
+    <script src="js/ras.js?v=3"></script>
     <script src="js/user.js?v=4"></script>
     <script src="js/profile.js?v=2"></script>
     <script src="js/manageStp.js?v=2"></script>

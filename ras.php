@@ -177,196 +177,53 @@ include("partials/navbar.php");
         <div class="rcSubCon">
             <table class="w-100">
                 <tr>
-                    <td class="text-center font-bold border border-dark">Route No.</td>
-                    <td class="text-center font-bold border border-dark">Pending Count</td>
-                    <td class="text-center font-bold border border-dark">Assigned Count</td>
+                    <td class="text-center font-bold border border-dark p-2">Route No.</td>
+                    <td class="text-center font-bold border border-dark p-2">Pending Count</td>
+                    <td class="text-center font-bold border border-dark p-2">Assigned Count</td>
                 </tr>
 
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
-                <tr class="routeBarRow">
-                    <td class="routeTableBar">1</td>
-                    <td class="routeTableBar">3</td>
-                    <td class="routeTableBar">150</td>
-                </tr>
+
+                <?php
+
+                    $query = "SELECT * FROM route";
+                    $stmt = $conn->prepare($query);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    $counter = 0;
+            
+                    while($route = $result->fetch_assoc()){
+
+                        $routeId = $route['id'];
+
+                        $queryPending = "SELECT COUNT(*) FROM delivery WHERE route = ? AND ack_status = 'pending'";
+                        $stmtPending = $conn->prepare($queryPending);
+                        $stmtPending->bind_param('i', $routeId);
+                        $stmtPending->execute();
+                        $countPending = $stmtPending->get_result()->fetch_assoc()['COUNT(*)']; 
+
+                        $queryAssigned = "SELECT COUNT(*) FROM delivery WHERE route = ? AND ack_status = 'assigned'";
+                        $stmtAssigned = $conn->prepare($queryAssigned);
+                        $stmtAssigned->bind_param('i', $routeId);
+                        $stmtAssigned->execute();
+                        $countAssigned = $stmtAssigned->get_result()->fetch_assoc()['COUNT(*)'];
+
+                        ?>
+
+                        <tr class="routeBarRow" onclick="routeClick('<?php echo $route['id']; ?>','routeBar<?php echo $counter; ?>')" id="routeBar<?php echo $counter;?>">
+                            <td class="routeTableBar p-1"><?php echo $route['id']; ?></td>
+                            <td class="routeTableBar p-1"><?php echo $countPending; ?></td>
+                            <td class="routeTableBar p-1"><?php echo $countAssigned; ?></td>
+                        </tr>
+
+                        <input type="text" hidden id="selectedRoute">
+
+                        <?php
+                        $counter++;
+                    }
+
+                ?>
+
                 
             </table>
         </div>
