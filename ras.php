@@ -22,41 +22,42 @@ include("partials/navbar.php");
 
                 <tr>
                     <td class="d-flex tableRowName">Driver Name <b class="text-danger"> &nbsp *</b></td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="driverName" id="driverName"></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">Mobile No. <b class="text-danger"> &nbsp *</b></td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="driverPhone" id="driverPhone"></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">Vehicle No. <b class="text-danger"> &nbsp *</b></td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="vehicleN" id="vehicleN"></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">No. Of Boxes</td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="no_boxes" id="no_boxes"></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">No. Of Parcels</td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="driverParcels" id="driverParcels"></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">Log Sheet No.</td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="driverSheet" id="driverSheet"></td>
                 </tr>
             </table>    
 
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
-                <p></p>
-                <div>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-danger" onclick="closePopUp()">Close</button>
-                </div>
+            <p id="addDriverError" class="text-danger"></p>
+            <div>
+                <button type="button" class="btn btn-primary" onclick="saveDriverDetails()">Save</button>
+                <button type="button" class="btn btn-danger" onclick="closePopUp()">Close</button>
+            </div>
+
             </div>
         </form>
     </div>
@@ -67,40 +68,49 @@ include("partials/navbar.php");
     <div class="popUpWindow popUpGONE" id="popUpWindow">
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
             <h5>Scan Delivery Note</h5>
-            <button class="btn btn-danger" onclick="closePopUp()">X</button>
+            <div class="d-flex justify-content-center align-items-center">
+                <div id="scanDNLoadingImg" class="d-none">
+                    <img src="images/loader.gif" alt="" width="40" height="40" class="p-2">
+                </div>
+                <button class="btn btn-danger" onclick="closePopUp()" id="scanDNCross">X</button>
+            </div>
         </div>
 
-        <form post="POST">
+        <form>
             <table class="mt-3">
                 <tr>
                     <td class="d-flex tableRowName">Delivery No.  <b class="text-danger"> &nbsp *</b></td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="scanDeliveryNo" id="scanDeliveryNo"></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">STP Code </td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="scanSTPcode" id="scanSTPcode"></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">Customer Name </td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="scanCustomerName" id="scanCustomerName"></td>
                 </tr>
             </table>    
 
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
-                <p></p>
+                <p class="text-danger" id="scanDNError"></p>
                 <div>
-                    <button type="submit" class="btn btn-primary">Assign</button>
-                    <button type="button" class="btn btn-danger" onclick="closePopUp()">Close</button>
+                    <button type="button" class="btn btn-primary" id="scanDNAssignButton" onclick="assignSDN()">Assign</button>
+                    <button type="button" class="btn btn-danger" onclick="closePopUp()" id="scanDNCloseButton">Close</button>
                 </div>
             </div>
         </form>
+        
     </div>
 </div>
 
 
 <div class="popUpContainer" id="holdPopUp">
+
+    <div class="position-absolute top-0 right-0 bottom-0 left-0">ppp</div>
+
     <div class="popUpWindow popUpGONE" id="popUpWindow">
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
             <h5>Hold Delivery</h5>
@@ -239,27 +249,27 @@ include("partials/navbar.php");
         <div class="rasOtherSubCon">
             <div class="rasTopBar">
                 <h6>Assigned Deliveries</h6>
-                <i class="bx:down-arrow text-white"></i>
+                <i id="assignedDeliveryLoader"></i>
             </div>
 
             <div class="assignDelSub">
                 <table class="w-100">
                     <tr>
                         <td class="text-center pb-2">Route No. </td>
-                        <td class="text-center pb-2"><input type="text" placeholder="Route No." readonly></td>
+                        <td class="text-center pb-2"><input type="text" placeholder="Route No." readonly id="loadedRouteNumber"></td>
                         <td class="text-center pb-2">Vehicle No.</td>
                         <td class="text-center pb-2" class="d-flex">
-                            <select name="vehicleNumber" id="vehicleNumber">
-                                <option value="none" hidden>Select Vehicle Number</option>
+                            <select name="vehicleNumber" id="vehicleNumber" onchange="assignedDeliveryUpdate()">
+                                <option value="none"></option>
                             </select>
-                            <button class="btn btn-primary" onclick="addVehicle()"> + </button>
+                            <button class="btn btn-primary" onclick="addVehicle()" id="addVehicleButton"> + </button>
                         </td>
                     </tr>
                 </table>
             </div>
 
             <div class="assignDelSub">
-                <div class="assignDelSubTableCon">
+                <div class="assignDelSubTableCon" id="assignedDelDataCon">
                     <table>
                         <tr>
                             <td class="font-bold border text-center p-1">Delivery No.</td>
@@ -268,36 +278,27 @@ include("partials/navbar.php");
                             <td class="font-bold border text-center p-1">Date</td>
                             <td class="font-bold border text-center p-1">Created By</td>
                             <td class="font-bold border text-center p-1">Remove</td>
-                        </tr>
-                        <tr>
-                            <td class="border text-center p-1">Delivery No.</td>
-                            <td class="border text-center p-1">STP Code</td>
-                            <td class="border text-center p-1">Customer Name</td>
-                            <td class="border text-center p-1">Date</td>
-                            <td class="border text-center p-1">Created By</td>
-                            <td class="border text-center p-1">
-                                <button class="btn btn-danger" onclick="removeOn()">X</button>
-                            </td>
-                        </tr>
+                        </tr>                       
                     </table>
                 </div>
                 <div class="justify-content-center align-items-center d-flex mt-3">
-                    <button class="btn btn-success m-2" onclick="turnOnScan()">Scan DN</button>
-                    <button class="btn btn-primary m-2" onclick="addVehicle()">View Delivery Info</button>
-                    <button class="btn btn-primary m-2" onclick="printAssigned()">Print</button>
+                    <button class="btn btn-success m-2" onclick="turnOnScan()" id="scanDNButton">Scan DN</button>
+                    <button class="btn btn-primary m-2" onclick="addVehicle()" id="viewDeliveryButton">View Delivery Info</button>
+                    <button class="btn btn-primary m-2" onclick="printAssigned()" id="PrintDNButton">Print</button>
                 </div>
             </div>
             
+            <p id="assignedDelError" class="text-danger mt-2"></p>
 
         </div>
 
         <div class="rasOtherSubCon">
             <div class="rasTopBar">
                 <h6>Pending Deliveries</h6>
-                <i class="bx:down-arrow text-white"></i>
+                <i id="pendingDelLoader"></i>
             </div>
             <div class="assignDelSub">
-                <div class="assignPenSubTableCon">
+                <div class="assignPenSubTableCon" id="pendingDataLoader">
                     <table>
                         <tr>
                             <td class="font-bold border text-center p-1">Delivery No.</td>
@@ -307,24 +308,17 @@ include("partials/navbar.php");
                             <td class="font-bold border text-center p-1">Created By</td>
                             <td class="font-bold border text-center p-1">Remove</td>
                         </tr>
-                        <tr>
-                            <td class="border text-center p-1">Delivery No.</td>
-                            <td class="border text-center p-1">STP Code</td>
-                            <td class="border text-center p-1">Customer Name</td>
-                            <td class="border text-center p-1">Date</td>
-                            <td class="border text-center p-1">Created By</td>
-                            <td class="border text-center p-1">
-                                <button class="btn btn-danger" onclick="turnOnHold()">-</button>
-                            </td>
-                        </tr>
                         
                     </table>
                 </div>
+                <p class="text-danger mt-2" id="pendingDError"></p>
             </div>
         </div>
 
     </div>
 </div>
+
+<script src="js/rasControler.js"></script>
 
 <?php
 
