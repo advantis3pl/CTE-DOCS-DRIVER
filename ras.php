@@ -64,6 +64,64 @@ include("partials/navbar.php");
 </div>
 
 
+<div class="popUpContainer" id="viewDriverInfo">
+    <div class="popUpWindow popUpGONE" id="popUpWindow">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+            <h5>Driver Info</h5>
+            <button class="btn btn-danger" onclick="closePopUp()" id="viewDriverXbutton">X</button>
+        </div>
+
+        <form post="POST">
+            <table class="mt-3">
+                <tr>
+                    <td class="d-flex tableRowName">Driver NIC <b class="text-danger"> &nbsp *</b></td>
+                    <td class="tableRowData"><input type="text" name="driverNIC_info" id="driverNIC_info"></td>
+                </tr>
+
+                <tr>
+                    <td class="d-flex tableRowName">Driver Name <b class="text-danger"> &nbsp *</b></td>
+                    <td class="tableRowData"><input type="text" name="driverName_info" id="driverName_info"></td>
+                </tr>
+
+                <tr>
+                    <td class="d-flex tableRowName">Mobile No. <b class="text-danger"> &nbsp *</b></td>
+                    <td class="tableRowData"><input type="text" name="driverPhone_info" id="driverPhone_info"></td>
+                </tr>
+
+                <tr>
+                    <td class="d-flex tableRowName">Vehicle No. <b class="text-danger"> &nbsp *</b></td>
+                    <td class="tableRowData"><input type="text" name="vehicleN_info" id="vehicleN_info"></td>
+                </tr>
+
+                <tr>
+                    <td class="d-flex tableRowName">No. Of Boxes</td>
+                    <td class="tableRowData"><input type="text" name="no_boxes_info" id="no_boxes_info"></td>
+                </tr>
+
+                <tr>
+                    <td class="d-flex tableRowName">No. Of Parcels</td>
+                    <td class="tableRowData"><input type="text" name="driverParcels_info" id="driverParcels_info"></td>
+                </tr>
+
+                <tr>
+                    <td class="d-flex tableRowName">Log Sheet No.</td>
+                    <td class="tableRowData"><input type="text" name="driverSheet_info" id="driverSheet_info"></td>
+                </tr>
+            </table>    
+
+            <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
+            <p id="addDriverError_info" class="text-danger"></p>
+            <div>
+                <button type="button" class="btn btn-primary" onclick="updateDriverDetails()" id="updateDriverButton">Update</button>
+                <button type="button" class="btn btn-danger" onclick="closePopUp()" id="closeViewDriver">Close</button>
+            </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <div class="popUpContainer" id="sdnPopUp">
     <div class="popUpWindow popUpGONE" id="popUpWindow">
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
@@ -283,7 +341,7 @@ include("partials/navbar.php");
                 </div>
                 <div class="justify-content-center align-items-center d-flex mt-3">
                     <button class="btn btn-success m-2" onclick="turnOnScan()" id="scanDNButton">Scan DN</button>
-                    <button class="btn btn-primary m-2" onclick="addVehicle()" id="viewDeliveryButton">View Delivery Info</button>
+                    <button class="btn btn-primary m-2" onclick="viewDriverInfo()" id="viewDeliveryButton">View Delivery Info</button>
                     <button class="btn btn-primary m-2" onclick="printAssigned()" id="PrintDNButton">Print</button>
                 </div>
             </div>

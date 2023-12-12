@@ -110,6 +110,11 @@ function assignedDeliveryUpdate(){
     const driver = document.getElementById("vehicleNumber").value;
     const assignedDelError = document.getElementById("assignedDelError");
 
+    assignedDelError.innerText = ``;
+    assignedDelDataCon.innerHTML = ``;
+
+    console.log(driver);
+
     if(driver != "none"){
         var xhr2 = new XMLHttpRequest();
         xhr2.open("POST", "backend/ras/getRasAssigned.php", true);
@@ -209,20 +214,34 @@ function saveDriverDetails(){
         addDriverError.innerText = "Some important fields are empty!";
     }
 }
-function validateDriver(nic,name,phone,vehicle,boxes,parcel,sheet){
 
+function validateDriver(nic, name, phone, vehicle, boxes, parcel, sheet) {
     if (nic.length > 12) {
         return "Invalid NIC number";
     }
-    if (isNaN(phone) || phone.length != 10) {
-        return "Invalid phone number";
-    }
+
     if (vehicle.length > 10) {
         return "Invalid vehicle number";
     }
+
     if (isNaN(boxes) || isNaN(parcel)) {
         return "Boxes and parcels should be numbers";
     }
+
+    phone = phone.replace(/\D/g, '');
+
+    if (phone.length == 9) {
+        if(phone.startsWith(0)){
+            return "Invalid phone number.";
+        }
+    }
+
+    if (phone.length == 10) {
+        if(!phone.startsWith(0)){
+            return "Invalid phone number.";
+        }
+    }
+
     return "done";
 }
 
@@ -428,4 +447,160 @@ function stopScanDNLoading(){
 
     document.getElementById("scanDNLoadingImg").classList.remove("d-block");
     document.getElementById("scanDNLoadingImg").classList.add("d-none");
+}
+
+
+function viewDriverInfo(){
+    const popUpContainer = document.getElementById("viewDriverInfo");
+    popUpContainer.style.display = "block";
+
+    const vehicleNumber = document.getElementById("vehicleNumber").value;
+    const vehicleDataError = document.getElementById("addDriverError_info");
+
+
+    const closeBtn = document.getElementById("viewDriverXbutton");
+    const updateBtn = document.getElementById("updateDriverButton");
+    const closeBtn2 = document.getElementById("closeViewDriver");
+
+    closeBtn.disabled = true;
+    updateBtn.disabled = true;
+    closeBtn2.disabled = true; 
+
+    if(vehicleNumber != "none"){
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open("POST", "backend/ras/getVehicleData.php", true);
+        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr2.onreadystatechange = function () {
+            if (xhr2.readyState === 4) {
+                if (xhr2.status === 200) {
+                    let res2 = xhr2.responseText.toString();
+                    let jsonRes = JSON.parse(res2);
+
+                    if(jsonRes.requestStatus == 200){
+                        
+                        document.getElementById("driverNIC_info").value = jsonRes.nic;
+                        document.getElementById("driverName_info").value = jsonRes.name;
+                        document.getElementById("driverPhone_info").value = jsonRes.phone;
+                        document.getElementById("vehicleN_info").value = jsonRes.vehicle;
+                        document.getElementById("no_boxes_info").value = jsonRes.no_box;
+                        document.getElementById("driverParcels_info").value = jsonRes.no_parcel;
+                        document.getElementById("driverSheet_info").value = jsonRes.log_no;
+
+                        closeBtn.disabled = false;
+                        updateBtn.disabled = false;
+                        closeBtn2.disabled = false; 
+
+                    }else{
+                        vehicleDataError.innerText = jsonRes.message;
+                        closeBtn.disabled = false;
+                        updateBtn.disabled = true;
+                        closeBtn2.disabled = false; 
+                    }
+
+                } else {
+                    vehicleDataError.innerText = "Something went wrong!";
+                    closeBtn.disabled = false;
+                    updateBtn.disabled = true;
+                    closeBtn2.disabled = false;
+                }
+            }
+        };
+
+        const data2 = {
+            id: vehicleNumber
+        };
+
+        var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+        xhr2.send(formData2);
+    }
+
+}
+
+
+function updateDriverDetails(){
+    const nic = document.getElementById("driverNIC_info").value;
+    const name = document.getElementById("driverName_info").value;
+    const phone = document.getElementById("driverPhone_info").value;
+    const vehicle = document.getElementById("vehicleN_info").value;
+    const boxes = document.getElementById("no_boxes_info").value;
+    const parcel = document.getElementById("driverParcels_info").value;
+    const sheet = document.getElementById("driverSheet_info").value;
+    const selectedInput = document.getElementById('selectedRoute').value;
+
+    const driverId = document.getElementById("vehicleNumber").value;
+
+    const closeBtn = document.getElementById("viewDriverXbutton");
+    const updateBtn = document.getElementById("updateDriverButton");
+    const closeBtn2 = document.getElementById("closeViewDriver");
+
+    const addDriverError = document.getElementById("addDriverError_info");
+    addDriverError.innerText = ``;
+
+    if(nic != "" && name != "" && phone != "" && vehicle != ""){
+        
+        let driverValidation = validateDriver(nic,name,phone,vehicle,boxes,parcel,sheet);
+        
+        if(driverValidation == "done"){
+
+            closeBtn.disabled = true;
+            updateBtn.disabled = true;
+            closeBtn2.disabled = true; 
+
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open("POST", "backend/ras/updateVehicle.php", true);
+            xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr2.onreadystatechange = function () {
+                if (xhr2.readyState === 4) {
+                    if (xhr2.status === 200) {
+                        let res2 = xhr2.responseText.toString();
+                        let jsonRes = JSON.parse(res2);
+                        if(jsonRes.requestStatus == 200){
+                            alert(jsonRes.message);
+                            loadDrivers(selectedInput);
+                            document.getElementById("vehicleNumber").value = `none`;
+                            assignedDeliveryUpdate();
+                            closePopUp();
+                            closeBtn.disabled = false;
+                            updateBtn.disabled = false;
+                            closeBtn2.disabled = false; 
+                        }else{
+                            addDriverError.innerText = jsonRes.message;
+                            closeBtn.disabled = false;
+                            updateBtn.disabled = false;
+                            closeBtn2.disabled = false;
+                        }
+                    } else {
+                        addDriverError.innerText = "Something went wrong!";
+                        closeBtn.disabled = false;
+                        updateBtn.disabled = false;
+                        closeBtn2.disabled = false;
+                    }
+                }
+            };
+
+            const data2 = {
+                driverId: driverId,
+                nic : nic, 
+                name : name,
+                phone : phone,
+                vehicle : vehicle,
+                box : boxes,
+                parcel : parcel,
+                log : sheet,
+            };
+
+            var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+            xhr2.send(formData2);
+
+            
+        }else{
+            addDriverError.innerText = driverValidation;
+            console.log("Data validate error!");
+        }
+
+    }else{
+        addDriverError.innerText = "Some important fields are empty!";
+    }
 }

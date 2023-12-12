@@ -80,12 +80,12 @@ if(isset($_SESSION['user_id'])){
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
-    <script src="js/main.js?v=6"></script>
+    <script src="js/main.js?v=7"></script>
     <script src="js/upload.js"></script>
     <script src="js/home.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/cards.js?v=1.2"></script>
-    <script src="js/ras.js?v=3.5"></script>
+    <script src="js/ras.js?v=4"></script>
     <script src="js/user.js?v=4"></script>
     <script src="js/profile.js?v=2"></script>
     <script src="js/manageStp.js?v=2"></script>
