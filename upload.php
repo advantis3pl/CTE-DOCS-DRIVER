@@ -67,7 +67,7 @@ include("partials/navbar.php");
                 <div class="panel-body">
                     <div class="border p-3">
                         <form method="POST" id="factoryInvoiceForm">
-                            <p class="text-danger">This is used to upload deliveries invoiced from other user IDs (which are invoiced from factory) </p>
+                            <p class="text-secondary">Upload factory invoices here. </p>
                             <div class="d-flex border p-2">
                                 <label>Factory Invoice</label>
                                 <input type="file" name="factoryInvoiceFile" id="factoryInvoiceFile">
@@ -80,59 +80,6 @@ include("partials/navbar.php");
             </div>
         </div>
     </div>
-
-
-
-    <div>
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h4 class="panel-titleText">
-                    Update Pending Delivery
-                    <div class="pull-right">
-                        <a href="#" data-perform="panel-collapse" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i></a>
-                    </div>
-                </h4>
-            </div>
-
-            <div class="panel-wrapper collapse">
-                <div class="panel-body">
-                    <div class="updateFormCon border p-3">
-                        <form method="POST" class="updateForm">
-
-                        <div class="updateFormControl">
-                            <label>Delivery No. : </label>
-                            <input type="text" class="iw60">
-                            <button class="btn btn-secondary">Search</button>
-                        </div>
-
-                        <div class="updateFormControl">
-                            <label>STP Code : </label>
-                            <input type="text" class="iw80">
-                        </div>
-
-                        <div class="updateFormControl">
-                            <label>Customer Name : </label>
-                            <input type="text" class="iw80">
-                        </div>
-
-                        <div class="updateFormControl">
-                            <label>Remark : </label>
-                            <textarea name="remark" id="remark" rows="5"></textarea>
-                        </div>
-
-                        <div class="updateFormActions">
-                            <button type="button" class="btn btn-danger mr-2">Invoice Cancellation</button>
-                            <button type="button" class="btn btn-success mr-2">Special Delivery</button>
-                            <button type="button" class="btn btn-primary">Customer Collection</button>
-                        </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 
     <div>

@@ -79,13 +79,16 @@ if(isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,300italic,400italic,600italic">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    
+    <!--for html to pdf-->
+    <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
     <script src="js/main.js?v=7"></script>
     <script src="js/upload.js"></script>
     <script src="js/home.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/cards.js?v=1.2"></script>
-    <script src="js/ras.js?v=4"></script>
+    <script src="js/ras.js?v=5"></script>
     <script src="js/user.js?v=4"></script>
     <script src="js/profile.js?v=2"></script>
     <script src="js/manageStp.js?v=2"></script>
@@ -145,7 +148,7 @@ if(isset($_SESSION['user_id'])){
         <a href="upload.php" class="text-white font-underline-none">
             <li class="nav-link">
                 <i class="bx bx-upload text-white"></i>
-                <span class="mx-2 text-white">Upload SAP Reports</span>
+                <span class="mx-2 text-white">Upload Reports</span>
             </li>
         </a>
 
@@ -160,6 +163,13 @@ if(isset($_SESSION['user_id'])){
             <li class="nav-link">
                 <i class="bx bx-car text-white"></i>
                 <span class="mx-2 text-white">Route Reconciliation</span>
+            </li>
+        </a>
+
+        <a href="updatePending.php" class="text-white font-underline-none">
+            <li class="nav-link">
+                <i class="bx bx-upload text-white"></i>
+                <span class="mx-2 text-white">Update Pending Delivery</span>
             </li>
         </a>
 

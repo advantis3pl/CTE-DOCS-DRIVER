@@ -35,6 +35,7 @@ isset($_POST['route'])){
     $currentRoute = htmlspecialchars($_POST['route']);
     $currentRoute = mysqli_real_escape_string($conn, $currentRoute);
 
+    date_default_timezone_set('Asia/Colombo');
     $date = date('Y-n-j');
     $time = date('H:i:s');
 

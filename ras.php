@@ -270,7 +270,8 @@ include("partials/navbar.php");
                         $stmtPending->execute();
                         $countPending = $stmtPending->get_result()->fetch_assoc()['COUNT(*)']; 
 
-                        $queryAssigned = "SELECT COUNT(*) FROM delivery WHERE route = ? AND ack_status = 'assigned'";
+                        $queryAssigned = "SELECT COUNT(*) FROM delivery
+                        WHERE route = ? AND ack_status = 'assigned' AND isPrinted = 'false'";
                         $stmtAssigned = $conn->prepare($queryAssigned);
                         $stmtAssigned->bind_param('i', $routeId);
                         $stmtAssigned->execute();
@@ -289,7 +290,6 @@ include("partials/navbar.php");
                         <?php
                         $counter++;
                     }
-
                 ?>
 
                 

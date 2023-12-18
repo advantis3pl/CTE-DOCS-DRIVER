@@ -21,8 +21,15 @@ if(isset($_POST['selectedRoute'])){
         while($driver = $result->fetch_assoc()){
 
             $createdDate = $driver['created_date'];
+            $isPrinted = $driver['isPrinted'];
 
-            if($currentDate == $createdDate){
+            if($isPrinted == "false"){
+                ?>
+                <option value="<?php echo $driver['id']; ?>"><?php echo $driver['vehicle']; ?></option>
+                <?php
+            }
+
+            /*if($currentDate == $createdDate){
 
                 ?>
                 <option value="<?php echo $driver['id']; ?>"><?php echo $driver['vehicle']; ?></option>
@@ -41,7 +48,7 @@ if(isset($_POST['selectedRoute'])){
                     <?php
                 }
 
-            }
+            }*/
         }
         ?>
 

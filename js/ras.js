@@ -9,10 +9,6 @@ function turnOnScan(){
     popUpContainer.style.display = "block";
 }
 
-function printAssigned(){
-    alert('print assigned deliveries');
-}
-
 function turnOnHold(){
     const popUpContainer = document.getElementById("holdPopUp");
     popUpContainer.style.display = "block";
@@ -22,3 +18,4 @@ function removeOn(){
     const popUpContainer = document.getElementById("removePopUp");
     popUpContainer.style.display = "block";
 }
+

@@ -604,3 +604,55 @@ function updateDriverDetails(){
         addDriverError.innerText = "Some important fields are empty!";
     }
 }
+
+
+function printAssigned(){
+    
+    const selectedVehicle = document.getElementById("vehicleNumber").value;
+
+    //start loading
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open("POST", "backend/ras/getDNPrint.php", true);
+    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr2.onreadystatechange = function () {
+        if (xhr2.readyState === 4) {
+            if (xhr2.status === 200) {
+                let res2 = xhr2.responseText.toString();
+
+                if(res2 == "500"){
+                    //error
+                    //stop loading
+                }else{
+                    downloadPDF(res2);
+                    //stop loading
+                }
+                
+            } else {
+                //error
+                //stop loading
+            }
+        }
+    };
+
+    const data2 = {
+        driverIdToPrint: selectedVehicle
+    };
+
+    var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+    xhr2.send(formData2);
+
+}
+
+function downloadPDF(element) {
+    console.log(element);
+    const options = {
+      margin: 10,
+      filename: 'RouteAllocation.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    };
+    html2pdf(element, options);
+  }

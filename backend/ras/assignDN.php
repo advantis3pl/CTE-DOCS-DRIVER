@@ -24,12 +24,16 @@ if(isset($_POST['deliveryNumber']) && isset($_POST['selectedRoute']) && isset($_
 
         //check the route and then add
 
+        date_default_timezone_set('Asia/Colombo');
+        $date = date('Y-n-j');
+        $time = date('H:i:s');
+
         if($delivery['route'] == $route){
 
             $assigned = "assigned";
-            $q = "UPDATE delivery SET ack_status = ?, driverId = ? WHERE delivery_no = ?";
+            $q = "UPDATE delivery SET ack_status = ?, driverId = ? , assigned_time = ? , assigned_date = ? WHERE delivery_no = ?";
             $s = $conn->prepare($q);
-            $s->bind_param('sis', $assigned,$driver,$dno);
+            $s->bind_param('sisss', $assigned,$driver,$time,$date,$dno);
             if($s->execute()){
 
                 $response = array(
