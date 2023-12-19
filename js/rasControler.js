@@ -103,6 +103,9 @@ function loadDrivers(id){
     xhr2.send(formData2);
 }
 function assignedDeliveryUpdate(){
+
+    document.getElementById("selectedVehicleStatus").value = "";
+
     disableVehicleSettings();
     disableAssignedActions();
     turnOnAssignedDeliveryLoader("on");
@@ -113,33 +116,72 @@ function assignedDeliveryUpdate(){
     assignedDelError.innerText = ``;
     assignedDelDataCon.innerHTML = ``;
 
-    console.log(driver);
-
     if(driver != "none"){
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open("POST", "backend/ras/getRasAssigned.php", true);
-        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr2.onreadystatechange = function () {
-            if (xhr2.readyState === 4) {
-                if (xhr2.status === 200) {
-                    let res2 = xhr2.responseText.toString()
-                    assignedDelDataCon.innerHTML = res2;
-                    turnOnAssignedDeliveryLoader("off");
-                    ableVehicleSettings();
-                    ableassignedactions();
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "backend/ras/getDriverStatus.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    let res = xhr.responseText.toString();
+                    let jsonRes = JSON.parse(res);
+
+                    document.getElementById("selectedVehicleStatus").value = jsonRes.message;
+                    
+                    if(jsonRes.requestStatus == 200){
+                        
+                        var xhr2 = new XMLHttpRequest();
+                        xhr2.open("POST", "backend/ras/getRasAssigned.php", true);
+                        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhr2.onreadystatechange = function () {
+                            if (xhr2.readyState === 4) {
+                                if (xhr2.status === 200) {
+                                    let res2 = xhr2.responseText.toString()
+                                    assignedDelDataCon.innerHTML = res2;
+                                    turnOnAssignedDeliveryLoader("off");
+
+                                    if(jsonRes.message){
+                                        ableVehicleSettings();
+                                        document.getElementById("scanDNButton").disabled = true;
+                                        document.getElementById("viewDeliveryButton").disabled = false;
+                                        document.getElementById("PrintDNButton").disabled = false;
+                                    }else{
+                                        ableVehicleSettings();
+                                        ableassignedactions();
+                                    }
+                                    
+                                } else {
+                                    turnOnAssignedDeliveryLoader("off");
+                                    ableVehicleSettings();
+                                    assignedDelError.innerText = `Something went wrong. Failed to load drivers`;
+                                }
+                            }
+                        };
+                        const data2 = {
+                            driverId: driver,
+                            driverStatus: jsonRes.message
+                        };
+                        var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+                        xhr2.send(formData2);
+
+
+                    }else{
+
+                    }
+
                 } else {
-                    console.log("error");
-                    turnOnAssignedDeliveryLoader("off");
-                    ableVehicleSettings();
-                    assignedDelError.innerText = `Something went wrong. Failed to load drivers`;
+                    
                 }
             }
         };
-        const data2 = {
+        const data = {
             driverId: driver,
         };
-        var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
-        xhr2.send(formData2);
+        var formData = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
+        xhr.send(formData);
+
     }else{
         turnOnAssignedDeliveryLoader("off");
         assignedDelDataCon.innerHTML = assignedDefualt;
@@ -213,6 +255,32 @@ function saveDriverDetails(){
     }else{
         addDriverError.innerText = "Some important fields are empty!";
     }
+}
+function getDriverStatus(id){
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open("POST", "backend/ras/getDriverStatus.php", true);
+    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr2.onreadystatechange = function () {
+        if (xhr2.readyState === 4) {
+            if (xhr2.status === 200) {
+                let res2 = xhr2.responseText.toString()
+                assignedDelDataCon.innerHTML = res2;
+                turnOnAssignedDeliveryLoader("off");
+                ableVehicleSettings();
+                ableassignedactions();
+            } else {
+                console.log("error");
+                turnOnAssignedDeliveryLoader("off");
+                ableVehicleSettings();
+                assignedDelError.innerText = `Something went wrong. Failed to load drivers`;
+            }
+        }
+    };
+    const data2 = {
+        driverId: id,
+    };
+    var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+    xhr2.send(formData2);
 }
 
 function validateDriver(nic, name, phone, vehicle, boxes, parcel, sheet) {
@@ -451,6 +519,9 @@ function stopScanDNLoading(){
 
 
 function viewDriverInfo(){
+
+    const vehicleStatus = document.getElementById("selectedVehicleStatus").value;
+
     const popUpContainer = document.getElementById("viewDriverInfo");
     popUpContainer.style.display = "block";
 
@@ -488,8 +559,13 @@ function viewDriverInfo(){
                         document.getElementById("driverSheet_info").value = jsonRes.log_no;
 
                         closeBtn.disabled = false;
-                        updateBtn.disabled = false;
                         closeBtn2.disabled = false; 
+
+                        if(vehicleStatus == "true"){
+                            updateBtn.disabled = true;
+                        }else{
+                            updateBtn.disabled = false;
+                        }
 
                     }else{
                         vehicleDataError.innerText = jsonRes.message;
@@ -611,27 +687,34 @@ function printAssigned(){
     const selectedVehicle = document.getElementById("vehicleNumber").value;
 
     //start loading
+    disableVehicleSettings();
+    disableAssignedActions();
+    turnOnAssignedDeliveryLoader("on");
+
 
     var xhr2 = new XMLHttpRequest();
     xhr2.open("POST", "backend/ras/getDNPrint.php", true);
     xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
     xhr2.onreadystatechange = function () {
         if (xhr2.readyState === 4) {
             if (xhr2.status === 200) {
                 let res2 = xhr2.responseText.toString();
 
                 if(res2 == "500"){
-                    //error
-                    //stop loading
+                    alert("Failed to download the report");
+                    ableVehicleSettings();
+                    ableassignedactions();
+                    turnOnAssignedDeliveryLoader("off");
+
                 }else{
-                    downloadPDF(res2);
-                    //stop loading
+                    downloadPDF(res2,selectedVehicle);
                 }
                 
             } else {
-                //error
-                //stop loading
+                alert("Something went wrong!");
+                ableVehicleSettings();
+                ableassignedactions();
+                turnOnAssignedDeliveryLoader("off");
             }
         }
     };
@@ -645,8 +728,10 @@ function printAssigned(){
 
 }
 
-function downloadPDF(element) {
-    console.log(element);
+function downloadPDF(element,selectedVehicle) {
+
+    updateVehicleStatus(selectedVehicle);
+
     const options = {
       margin: 10,
       filename: 'RouteAllocation.pdf',
@@ -655,4 +740,43 @@ function downloadPDF(element) {
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     };
     html2pdf(element, options);
-  }
+
+}
+
+function updateVehicleStatus(id){
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open("POST", "backend/ras/updateVehicleStatus.php", true);
+    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr2.onreadystatechange = function () {
+        if (xhr2.readyState === 4) {
+            if (xhr2.status === 200) {
+                
+                let res2 = xhr2.responseText.toString();
+                let jsonRes = JSON.parse(res2);
+                if(jsonRes.requestStatus == 200){
+
+                    assignedDeliveryUpdate();
+                    
+                }else{
+                    alert("Something went wrong!");
+                    ableVehicleSettings();
+                    ableassignedactions();
+                    turnOnAssignedDeliveryLoader("off");
+                }
+                
+            } else {
+                alert("Something went wrong!");
+                ableVehicleSettings();
+                ableassignedactions();
+                turnOnAssignedDeliveryLoader("off");
+            }
+        }
+    };
+
+    const data2 = {
+        selectedVehicle: id
+    };
+
+    var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+    xhr2.send(formData2);
+}

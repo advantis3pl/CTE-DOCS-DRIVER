@@ -23,32 +23,33 @@ if(isset($_POST['selectedRoute'])){
             $createdDate = $driver['created_date'];
             $isPrinted = $driver['isPrinted'];
 
-            if($isPrinted == "false"){
-                ?>
-                <option value="<?php echo $driver['id']; ?>"><?php echo $driver['vehicle']; ?></option>
-                <?php
-            }
 
-            /*if($currentDate == $createdDate){
 
-                ?>
-                <option value="<?php echo $driver['id']; ?>"><?php echo $driver['vehicle']; ?></option>
-                <?php
+            $printedTime = $driver['printedTime'];
+            $printedDate = $driver['printedDate'];
+
+            if($isPrinted == "true"){
+
+                date_default_timezone_set('Asia/Colombo');
+
+                $printedDateTimeString = "$printedDate $printedTime";
+                $printedDateTime = DateTime::createFromFormat('Y-n-j H:i:s', $printedDateTimeString);
+                $currentDateTime = new DateTime();
+                $interval = $printedDateTime->diff($currentDateTime);
+                $hoursDifference = $interval->h + ($interval->days * 24);
                 
-            }else{
-                $assignedStatus = "assigned";
-                $q = "SELECT * FROM delivery WHERE driverId = ? AND ack_status = ?";
-                $s = $conn->prepare($q);
-                $s->bind_param('is', $driver['id'],$assignedStatus);
-                $s->execute();
-                $r = $s->get_result();
-                if ($r->num_rows != 0) {
+                if($hoursDifference < 12){
                     ?>
                     <option value="<?php echo $driver['id']; ?>"><?php echo $driver['vehicle']; ?></option>
                     <?php
                 }
 
-            }*/
+            }else{
+                ?>
+                    <option value="<?php echo $driver['id']; ?>"><?php echo $driver['vehicle']; ?></option>
+                <?php
+            }
+
         }
         ?>
 

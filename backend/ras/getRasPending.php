@@ -41,8 +41,10 @@ if(isset($_POST['selectedRoute'])){
 
             <?php
         }
+        
         ?>
     </table>
+
     <?php
 
 }

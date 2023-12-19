@@ -376,6 +376,7 @@ include("partials/navbar.php");
     </div>
 </div>
 
+<input type="text" hidden name="selectedVehicleStatus" id="selectedVehicleStatus">
 <script src="js/rasControler.js"></script>
 
 <?php
