@@ -47,3 +47,10 @@ body{
 #mainContainer{
   padding: 0 15px 15px 15px;
 }
+
+.routePlanTableElements{
+  cursor: pointer;
+}
+.assignedDeliveryElements{
+  cursor: pointer;
+}

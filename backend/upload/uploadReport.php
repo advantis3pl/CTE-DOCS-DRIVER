@@ -81,12 +81,13 @@ isset($_POST['report'])){
                 $pendingDate = $currentDate;
                 $ackStatus = "pending";
                 $empty = "";
+                $scanPending = "scan_pending";
 
                 $q = "INSERT INTO delivery(report_id, delivery_no, stp_code,stp_name, invoice_date,
                 stp_location,created_by,sending_date,production_transfer,remark,ack_status,updated_status,
                 return_status,pending_time,pending_date,assigned_time,assigned_date,scanned_time,scanned_date,route) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 $s = $conn->prepare($q);
-                $s->bind_param('sssssssssssssssssssi', $reportId,$delivery,$stpCode,$stpName,$invoiceDate,$stpLocation,$createdBy,$empty,$empty,$empty,$ackStatus,$empty,$empty,$pendingTime,$pendingDate,$empty,$empty,$empty,$empty,$currentRoute);
+                $s->bind_param('sssssssssssssssssssi', $reportId,$delivery,$stpCode,$stpName,$invoiceDate,$stpLocation,$createdBy,$empty,$empty,$empty,$ackStatus,$scanPending,$empty,$pendingTime,$pendingDate,$empty,$empty,$empty,$empty,$currentRoute);
                 if($s->execute()){
                     $counter++;
                 }

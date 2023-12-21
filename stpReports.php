@@ -24,9 +24,10 @@ include("partials/navbar.php");
                 <tr>
                     <td class="d-flex stpReportLabel">Report </td>
                     <td class="stpReportLabel">
-                        <select name="report" id="report">
+                        <select name="stpReportType" id="stpReportType">
                             <option value="distribution_summary_report">Destribution Summary Report</option>
                             <option value="sdr_report">SDR Report</option>
+                            <option value="nddn_report">Not Delivered DN Report</option>
                             <option value="pending_collection_report">Pending Delivery Report</option>
                             <option value="customer_collection_report">Customer Collection Report</option>
                             <option value="special_collection_report">Special Delivery Report</option>
@@ -38,24 +39,24 @@ include("partials/navbar.php");
                 <tr>
                     <td class="d-flex text-center stpReportLabel">From Date</td>
                     <td class="stpReportLabel">
-                        <input type="date">
+                        <input type="date" id="stpFromDate">
                     </td>
                 </tr>
 
                 <tr>
                     <td class="d-flex stpReportLabel">To Date</td>
                     <td class="stpReportLabel">
-                        <input type="date">
+                        <input type="date" id="stpToDate">
                     </td>
                 </tr>
 
             </table>    
 
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
-                <p></p>
+                <p class="text-danger" id="stpError"></p>
                 <div>
-                    <button type="submit" class="btn btn-success">Excel</button>
-                    <button type="button" class="btn btn-danger">PDF</button>
+                    <button type="button" class="btn btn-success" onclick="stpDownloadExcel()" id="downloadExcelBtn">Excel</button>
+                    <button type="button" class="btn btn-danger" onclick="stpDownloadPDF()" id="downloadPDFBtn">PDF</button>
                 </div>
             </div>
         </form> 
@@ -65,7 +66,7 @@ include("partials/navbar.php");
 
 
 </div>
-
+<script src="js/stpController.js"></script>
 
 <?php
 
