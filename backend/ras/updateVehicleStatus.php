@@ -32,6 +32,27 @@ if(isset($_POST['selectedVehicle'])){
                         'message' => 'Updated Successfully!'
                     );
                     echo json_encode($response);
+
+
+
+                    $q_del = "SELECT * FROM delivery WHERE driverId = ?";
+                    $s_del = $conn->prepare($q_del);
+                    $s_del->bind_param('i', $driver);
+                    if($s_del->execute()){
+                        $r_del = $s_del->get_result();
+                        while($delivery_data = $r_del->fetch_assoc()){
+
+                            $actoin_description = "Delivery Printed";
+                            $action_remark = "";
+                            $q_action = "INSERT INTO delivery_action(delivery_number,action_date,action_time,action,user,remark) VALUE (?,?,?,?,?,?)";
+                            $s_action = $conn->prepare($q_action);
+                            $s_action->bind_param('ssssis', $delivery_data['delivery_no'],$date,$time,$actoin_description,$userDbID,$action_remark);
+                            $s_action->execute();
+
+                        }
+                    }
+
+
                 }else{
                     $response = array(
                         'requestStatus' => 500,

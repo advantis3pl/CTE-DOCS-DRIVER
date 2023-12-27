@@ -21,13 +21,18 @@ if(isset($_POST['driverIdToPrint'])){
 
             $route = $driver['route'];
             $vehicle = $driver['vehicle'];
+            $noOfBoxes = $driver['no_box'];
+            $noOfParcels = $driver['no_parcel'];
+            $nameOfDeliveryMan = $driver['name'];
+            $driverNIC = $driver['nic'];
+            $logSheetNumber = $driver['log_no'];
+
             date_default_timezone_set('Asia/Colombo');
             $date = date('Y-n-j');
             $phone = $driver['phone'];
             
 
             ?>
-            
 
             <div class="p-3">
 
@@ -57,11 +62,15 @@ if(isset($_POST['driverIdToPrint'])){
                             <td>RA No:</td>
                             <td><?php echo $driverId; ?></td>
                         </tr>
+                        <tr class="border-bottom">
+                            <td>Log Sheet No:</td>
+                            <td><?php echo $logSheetNumber; ?></td>
+                        </tr>
                     </table>
                 </div>
 
                 <table class="w-100 mt-3">
-                    <tr class="mb-2">
+                    <tr class="mb-2 no-break">
                         <td class="border-bottom border-dark">No.</td>
                         <td class="border-bottom border-dark">Delivery No</td>
                         <td class="border-bottom border-dark">STC</td>
@@ -82,7 +91,7 @@ if(isset($_POST['driverIdToPrint'])){
                         $counter++;
                         ?>
                         
-                        <tr>
+                        <tr class="no-break">
                             <td><?php echo $counter; ?></td>
                             <td><?php echo $record['delivery_no']; ?></td>
                             <td><?php echo $record['stp_code']; ?></td>
@@ -95,6 +104,61 @@ if(isset($_POST['driverIdToPrint'])){
                     
                     ?>
                 </table>
+
+
+                <div class="justify-content-between align-items-center d-flex pt-3 no-break">
+
+                    <div class="border border-dark w-50">
+
+                        <table class="mt-3 w-100">
+                            <tr class="border-bottom border-dark">
+                                <td class="p-2">No of Boxes</td>
+                                <td class="p-2"><?php echo $noOfBoxes; ?></td>
+                            </tr>
+                            <tr class="border-bottom border-dark">
+                                <td class="p-2">No of Parcels</td>
+                                <td class="p-2"><?php echo $noOfParcels; ?></td>
+                            </tr>
+                            <tr class="border-bottom border-dark">
+                                <td class="p-2">Name of Deliveryman</td>
+                                <td class="p-2"><?php echo $nameOfDeliveryMan; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">NIC of Deliveryman</td>
+                                <td class="p-2"><?php echo $driverNIC; ?></td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="w-25"></div>
+
+                    <div class="border border-dark w-25">
+
+                        <table class="mt-3 w-100">
+                            <tr>
+                                <td class="p-2">________________</td>
+                            </tr>
+
+                            <tr>
+                                <td class="p-2 border-bottom border-dark">Signature of Deliveryman</td>
+                            </tr>
+
+                            <tr>
+                                <td class="p-2">________________</td>
+                            </tr>
+
+                            <tr>
+                                <td class="p-2">Summary checked by</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
 
             </div>
 

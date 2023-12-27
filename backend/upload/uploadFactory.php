@@ -97,6 +97,14 @@ isset($_POST['report'])){
                     $counter++;
                 }
 
+                $actoin_description = "Uploaded to the system";
+                $action_remark = "Uploaded from a factory invoice";
+
+                $q_action = "INSERT INTO delivery_action(delivery_number,action_date,action_time,action,user,remark) VALUE (?,?,?,?,?,?)";
+                $s_action = $conn->prepare($q_action);
+                $s_action->bind_param('ssssis', $delivery,$currentDate,$currentTime,$actoin_description,$userDbID,$action_remark);
+                $s_action->execute();
+
             }
 
             if(count($report) == $counter){

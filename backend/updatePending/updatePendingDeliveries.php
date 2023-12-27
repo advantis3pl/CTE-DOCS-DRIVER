@@ -14,6 +14,7 @@ if(isset($_POST['type']) && isset($_POST['deliveries'])){
     $currentTime = date('H:i:s');
 
     $fails = array();
+    $counter = 0;
 
     foreach ($deliveries as $data) {
 
@@ -29,13 +30,19 @@ if(isset($_POST['type']) && isset($_POST['deliveries'])){
         $remark = htmlspecialchars($data[3]);
         $remark = mysqli_real_escape_string($conn, $remark);
 
-        $counter = 0;
-
         $query = "UPDATE delivery SET remark = ? , ack_status = ?, assigned_time = ?, assigned_date = ? WHERE delivery_no = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param('sssss', $remark,$type,$currentTime,$currentDate,$dn);
         if($stmt->execute()){
             $counter++;
+
+            $actoin_description = "Delivery status updated to " . $type;
+            $action_remark = $remark;
+            $q_action = "INSERT INTO delivery_action(delivery_number,action_date,action_time,action,user,remark) VALUE (?,?,?,?,?,?)";
+            $s_action = $conn->prepare($q_action);
+            $s_action->bind_param('ssssis', $dn,$currentDate,$currentTime,$actoin_description,$userDbID,$action_remark);
+            $s_action->execute();
+
         }else{
             $fails[] = $dn;
         }
@@ -59,7 +66,7 @@ if(isset($_POST['type']) && isset($_POST['deliveries'])){
     }else if($counter != 0){
         $response = array(
             'requestStatus' => 400,
-            'message' => 'Completed with fails. Failed DN - ' . $failsString
+            'message' => 'Completed with fails. Failed DN - ' . $failsString . $counter . "/" . count($deliveries)
         );
         echo json_encode($response);
     }

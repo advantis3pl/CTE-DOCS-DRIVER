@@ -176,6 +176,13 @@ if(isset($_SESSION['user_id'])){
             </li>
         </a>
 
+        <a href="deliveryHistory.php" class="text-white font-underline-none">
+            <li class="nav-link">
+                <i class="bx bx-download text-white"></i>
+                <span class="mx-2 text-white">Delivery History</span>
+            </li>
+        </a>
+
         <a href="stpReports.php" class="text-white font-underline-none">
             <li class="nav-link">
                 <i class="bx bx-download text-white"></i>
@@ -183,8 +190,6 @@ if(isset($_SESSION['user_id'])){
             </li>
         </a>
         
-
-
         <div class="navBreaker"></div>
 
         <div class="navbarTopic">Personal Info</div>

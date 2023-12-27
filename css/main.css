@@ -54,3 +54,7 @@ body{
 .assignedDeliveryElements{
   cursor: pointer;
 }
+
+.no-break {
+    page-break-inside: avoid;
+}

@@ -36,6 +36,27 @@ if(isset($_POST['deliveryNumber']) && isset($_POST['selectedRoute']) && isset($_
             $s->bind_param('sisss', $assigned,$driver,$time,$date,$dno);
             if($s->execute()){
 
+                $q_driver = "SELECT * FROM driver WHERE id = ?";
+                $s_driver = $conn->prepare($q_driver);
+                $s_driver->bind_param('i', $driver);
+                if($s_driver->execute()){
+                    $result_driver = $s_driver->get_result();
+                    if ($result_driver->num_rows == 1) {
+                        $vehicle_data = $result_driver->fetch_assoc();
+                        $vehicleNumber = $vehicle_data['vehicle'];
+                        $driverName = $vehicle_data['name'];
+                        $driverPhoneNumber = $vehicle_data['phone'];
+
+                        $actoin_description = "Assigned to a vehicle";
+                        $action_remark = $vehicleNumber ."/". $driverName . "/" . $driverPhoneNumber;
+
+                        $q_action = "INSERT INTO delivery_action(delivery_number,action_date,action_time,action,user,remark) VALUE (?,?,?,?,?,?)";
+                        $s_action = $conn->prepare($q_action);
+                        $s_action->bind_param('ssssis', $dno,$date,$time,$actoin_description,$userDbID,$action_remark);
+                        $s_action->execute();
+                    }
+                }
+
                 $response = array(
                     'requestStatus' => 200,
                     'message' => 'Success!'

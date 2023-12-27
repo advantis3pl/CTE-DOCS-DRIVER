@@ -65,6 +65,21 @@ isset($_POST['vehicle'])){
                 );
                 echo json_encode($response);
 
+                $newType = "";
+                if($type == "ND"){
+                    $newType = "Not Delivered DN";
+                }else{
+                    $newType = "Same Day Return";
+                }
+
+                $actoin_description = "Status updated as " . $newType;
+                $action_remark = $remark;
+                $q_action = "INSERT INTO delivery_action(delivery_number,action_date,action_time,action,user,remark) VALUE (?,?,?,?,?,?)";
+                $s_action = $conn->prepare($q_action);
+                $s_action->bind_param('ssssis', $deliveryNumber,$date,$time,$actoin_description,$userDbID,$action_remark);
+                $s_action->execute();
+
+
             }else{
                 $response = array(
                     'requestStatus' => 400,

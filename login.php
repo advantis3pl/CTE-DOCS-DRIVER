@@ -44,7 +44,7 @@ if(isset($_SESSION['user_id'])){
     <form method="post" class="form login">
 
         <header class="login__header">
-            <h3 class="login__title">CTE Doc drive</h3>
+            <h3 class="login__title">CTE DOCS DRIVE</h3>
         </header>
 
         <div class="login__body">
@@ -59,8 +59,8 @@ if(isset($_SESSION['user_id'])){
 
         </div>
 
-        <footer class="login__footer">
-            <input class="w-100" type="submit" value="Login" name="login">
+        <footer class="login__footer justify-content-center align-item-center d-flex">
+            <button class="btn btn-primary w-50" name="login" type="submit">Login</button>
         </footer>
 
         <header class="login__header">
