@@ -10,7 +10,7 @@ include("partials/navbar.php");
     <div class="popUpWindow popUpGONE" id="popUpWindow">
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
             <h5>Driver Info</h5>
-            <button class="btn btn-danger" onclick="closePopUp()">X</button>
+            <button class="btn btn-danger" onclick="closePopUp()" id="addDriverCross">X</button>
         </div>
 
         <form post="POST">
@@ -54,8 +54,8 @@ include("partials/navbar.php");
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
             <p id="addDriverError" class="text-danger"></p>
             <div>
-                <button type="button" class="btn btn-primary" onclick="saveDriverDetails()">Save</button>
-                <button type="button" class="btn btn-danger" onclick="closePopUp()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveDriverDetails()" id="addDriverSave">Save</button>
+                <button type="button" class="btn btn-danger" onclick="closePopUp()" id="addDriverClose">Close</button>
             </div>
 
             </div>
@@ -134,7 +134,7 @@ include("partials/navbar.php");
             </div>
         </div>
 
-        <form>
+        <form id="scanDNForm">
             <table class="mt-3">
                 <tr>
                     <td class="d-flex tableRowName">Delivery No.  <b class="text-danger"> &nbsp *</b></td>
@@ -155,7 +155,7 @@ include("partials/navbar.php");
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
                 <p class="text-danger" id="scanDNError"></p>
                 <div>
-                    <button type="button" class="btn btn-primary" id="scanDNAssignButton" onclick="assignSDN()">Assign</button>
+                    <button class="btn btn-primary" id="scanDNAssignButton" onclick="assignSDN()">Assign</button>
                     <button type="button" class="btn btn-danger" onclick="closePopUp()" id="scanDNCloseButton">Close</button>
                 </div>
             </div>
@@ -172,30 +172,31 @@ include("partials/navbar.php");
     <div class="popUpWindow popUpGONE" id="popUpWindow">
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
             <h5>Hold Delivery</h5>
-            <button class="btn btn-danger" onclick="closePopUp()">X</button>
+            <button class="btn btn-danger" onclick="closePopUp()" id="hDnCross">X</button>
         </div>
 
-        <form post="POST">
+        <form post="POST" id="hDnForm">
             <table class="mt-3">
                 <tr>
-                    <td class="d-flex tableRowName">Delivery Date </td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="d-flex tableRowName">Delivery No. </td>
+                    <td class="tableRowData"><input type="text" name="hDnDeliveryNumber" id="hDnDeliveryNumber" readonly></td>
                 </tr>
 
                 <tr>
                     <td class="d-flex tableRowName">Remark <b class="text-danger"> &nbsp *</b></td>
-                    <td class="tableRowData"><textarea name="driverNIC" id="driverNIC" cols="30" rows="10"></textarea></td>
+                    <td class="tableRowData"><textarea name="hDNRemark" id="hDNRemark" cols="30" rows="10"></textarea></td>
                 </tr>
 
             </table>    
 
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
-                <p></p>
+                <p class="text-danger" id="hDnErrorText"></p>
                 <div>
-                    <button type="submit" class="btn btn-primary">Hold</button>
-                    <button type="button" class="btn btn-danger" onclick="closePopUp()">Close</button>
+                    <button type="submit" class="btn btn-primary" id="hDnHold">Hold</button>
+                    <button type="button" class="btn btn-danger" onclick="closePopUp()" id="hDNClose">Close</button>
                 </div>
             </div>
+            <input type="text" hidden name="hDnSelectedDelivery" id="hDnSelectedDelivery">
         </form>
     </div>
 </div>
@@ -204,30 +205,33 @@ include("partials/navbar.php");
     <div class="popUpWindow popUpGONE" id="popUpWindow">
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
             <h5>Remove Delivery</h5>
-            <button class="btn btn-danger" onclick="closePopUp()">X</button>
+            <button class="btn btn-danger" onclick="closePopUp()" id="rDNCross">X</button>
         </div>
 
-        <form post="POST">
+        <form post="POST" id="removeDNForm">
             <table class="mt-3">
                 <tr>
                     <td class="d-flex tableRowName">Delivery No. </td>
-                    <td class="tableRowData"><input type="text" name="driverNIC" id="driverNIC"></td>
+                    <td class="tableRowData"><input type="text" name="rDnDeliveryNo" id="rDnDeliveryNo" readonly></td>
                 </tr>
 
                 <tr>
-                    <td class="d-flex tableRowName">Remark <b class="text-danger"> &nbsp *</b></td>
-                    <td class="tableRowData"><textarea name="driverNIC" id="driverNIC" cols="30" rows="10"></textarea></td>
+                    <td class="d-flex tableRowName">Remark<b class="text-danger"> &nbsp *</b></td>
+                    <td class="tableRowData"><textarea name="rDNRemark" id="rDNRemark" cols="30" rows="10"></textarea></td>
                 </tr>
 
             </table>    
 
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
-                <p></p>
+                <p class="text-danger" id="rDnErrorText"></p>
                 <div>
-                    <button type="submit" class="btn btn-primary">Remove</button>
-                    <button type="button" class="btn btn-danger" onclick="closePopUp()">Close</button>
+                    <button type="submit" class="btn btn-primary" id="rDnRemove">Remove</button>
+                    <button type="button" class="btn btn-danger" onclick="closePopUp()" id="rDNClose">Close</button>
                 </div>
             </div>
+
+            <!--hidden inputs for this form-->
+            <input type="text" name="selectedIdForRemove" hidden id="selectedIdForRemove" readonly>
         </form>
     </div>
 </div>
@@ -296,9 +300,11 @@ include("partials/navbar.php");
             </table>
         </div>
 
+        <!--
         <div class="justify-content-center align-items-center d-flex mt-3">
             <button class="btn btn-success">Print All</button>
         </div>
+                -->
 
     </div>
 
@@ -352,7 +358,25 @@ include("partials/navbar.php");
 
         <div class="rasOtherSubCon">
             <div class="rasTopBar">
-                <h6>Pending Deliveries</h6>
+                <div class="pendingTypeContainer">
+                    <h6>Pending Deliveries</h6>
+                    <div class="pendingTypeContainer">
+                        <div class="pendingTypeSquare bg-white"></div>
+                        <h6>Pending</h6>
+                    </div>
+                    <div class="pendingTypeContainer">
+                        <div class="pendingTypeSquare bg-warning"></div>
+                        <h6>Same Day Return</h6>
+                    </div>
+                    <div class="pendingTypeContainer">
+                        <div class="pendingTypeSquare bg-danger"></div>
+                        <h6>Not Delivered DN</h6>
+                    </div>
+                    <div class="pendingTypeContainer">
+                        <div class="pendingTypeSquare bg-info"></div>
+                        <h6>Hold</h6>
+                    </div>
+                </div>
                 <i id="pendingDelLoader"></i>
             </div>
             <div class="assignDelSub">

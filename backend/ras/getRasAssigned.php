@@ -72,7 +72,7 @@ if(isset($_POST['driverId'])){
                     <?php
                     if($driverStatus == "false"){
                         ?>
-                            <button class="btn btn-danger" onclick="removeOn('<?php echo $deliver['id']; ?>')" id="deliveryRemoveButton">X</button>
+                            <button class="btn btn-danger" onclick="removeOn('<?php echo $deliver['id']; ?>','<?php echo $deliver['delivery_no']; ?>','<?php echo $deliver['remark']; ?>')" id="deliveryRemoveButton">X</button>
                         <?php
                     }else{
                         ?>

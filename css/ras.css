@@ -149,3 +149,17 @@
     border-radius: 10px;
     display: none;
 }
+
+
+.pendingTypeSquare{
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    margin: 0 5px 0 20px;
+}
+
+.pendingTypeContainer{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}

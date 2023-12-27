@@ -54,9 +54,9 @@ isset($_POST['vehicle'])){
             $pending = "pending";
             $empty = "";
 
-            $q_ud = "UPDATE delivery SET ack_status = ?,assigned_time = ?, assigned_date = ?, driverId = ?  WHERE id = ?";
+            $q_ud = "UPDATE delivery SET ack_status = ?,return_status = ?,assigned_time = ?, assigned_date = ?, driverId = ?  WHERE id = ?";
             $s_ud = $conn->prepare($q_ud);
-            $s_ud->bind_param('ssssi', $pending,$empty,$empty,$empty,$deliveryId);
+            $s_ud->bind_param('sssssi', $pending,$type,$empty,$empty,$empty,$deliveryId);
             if($s_ud->execute()){
 
                 $response = array(

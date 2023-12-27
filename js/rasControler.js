@@ -90,7 +90,6 @@ function loadDrivers(id){
                 turnOnAssignedDeliveryLoader("off");
                 ableVehicleSettings();
             } else {
-                console.log("error");
                 turnOnAssignedDeliveryLoader("off");
                 assignedDelError.innerText = `Something went wrong. Failed to load drivers`;
             }
@@ -102,6 +101,47 @@ function loadDrivers(id){
     var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
     xhr2.send(formData2);
 }
+
+
+//load drivers async 
+function loadDriversAsync(id) {
+    return new Promise((resolve, reject) => {
+        const vehicleNumbers = document.getElementById("vehicleNumber");
+        const assignedDelError = document.getElementById("assignedDelError");
+
+        turnOnAssignedDeliveryLoader("on");
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open("POST", "backend/ras/getVehicles.php", true);
+        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr2.onreadystatechange = function () {
+            if (xhr2.readyState === 4) {
+                if (xhr2.status === 200) {
+                    let res2 = xhr2.responseText.toString();
+                    vehicleNumbers.innerHTML = res2;
+                    turnOnAssignedDeliveryLoader("off");
+                    ableVehicleSettings();
+                    resolve();
+                } else {
+                    turnOnAssignedDeliveryLoader("off");
+                    assignedDelError.innerText = `Something went wrong. Failed to load drivers`;
+                    reject(new Error("Failed to load drivers"));
+                }
+            }
+        };
+
+        const data2 = {
+            selectedRoute: id,
+        };
+        var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+        xhr2.send(formData2);
+    });
+}
+
+
+
+
+
 function assignedDeliveryUpdate(){
 
     document.getElementById("selectedVehicleStatus").value = "";
@@ -204,7 +244,15 @@ function saveDriverDetails(){
     const addDriverError = document.getElementById("addDriverError");
     addDriverError.innerText = ``;
 
+    const aDCross = document.getElementById("addDriverCross");
+    const aDSave = document.getElementById("addDriverSave");
+    const aDClose = document.getElementById("addDriverClose");
+
     if(nic != "" && name != "" && phone != "" && vehicle != ""){
+
+        aDCross.disabled = true;
+        aDSave.disabled = true;
+        aDClose.disabled = true;
         
         let driverValidation = validateDriver(nic,name,phone,vehicle,boxes,parcel,sheet);
         
@@ -222,12 +270,21 @@ function saveDriverDetails(){
                         if(jsonRes.requestStatus == 200){
                             alert(jsonRes.message);
                             loadDrivers(selectedInput);
+                            aDCross.disabled = false;
+                            aDSave.disabled = false;
+                            aDClose.disabled = false;
                             closePopUp();
                         }else{
                             addDriverError.innerText = jsonRes.message;
+                            aDCross.disabled = false;
+                            aDSave.disabled = false;
+                            aDClose.disabled = false;
                         }
                     } else {
                         addDriverError.innerText = "Something went wrong!";
+                        aDCross.disabled = false;
+                        aDSave.disabled = false;
+                        aDClose.disabled = false;
                     }
                 }
             };
@@ -249,7 +306,9 @@ function saveDriverDetails(){
             
         }else{
             addDriverError.innerText = driverValidation;
-            console.log("Data validate error!");
+            aDCross.disabled = false;
+            aDClose.disabled = false;
+            aDSave.disabled = false;
         }
 
     }else{
@@ -421,6 +480,11 @@ scanDeliveryNoElement.addEventListener("input", function() {
 });
 
 
+document.getElementById('scanDNForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    assignSDN();
+});
+
 function assignSDN(){
     const dn = document.getElementById("scanDeliveryNo");
     const stp = document.getElementById("scanSTPcode");
@@ -533,11 +597,11 @@ function viewDriverInfo(){
     const updateBtn = document.getElementById("updateDriverButton");
     const closeBtn2 = document.getElementById("closeViewDriver");
 
-    closeBtn.disabled = true;
-    updateBtn.disabled = true;
-    closeBtn2.disabled = true; 
-
     if(vehicleNumber != "none"){
+
+        closeBtn.disabled = true;
+        updateBtn.disabled = true;
+        closeBtn2.disabled = true; 
 
         var xhr2 = new XMLHttpRequest();
         xhr2.open("POST", "backend/ras/getVehicleData.php", true);
@@ -627,20 +691,28 @@ function updateDriverDetails(){
             xhr2.open("POST", "backend/ras/updateVehicle.php", true);
             xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            xhr2.onreadystatechange = function () {
+            xhr2.onreadystatechange = async function () {
                 if (xhr2.readyState === 4) {
                     if (xhr2.status === 200) {
                         let res2 = xhr2.responseText.toString();
                         let jsonRes = JSON.parse(res2);
                         if(jsonRes.requestStatus == 200){
                             alert(jsonRes.message);
-                            loadDrivers(selectedInput);
-                            document.getElementById("vehicleNumber").value = `none`;
-                            assignedDeliveryUpdate();
-                            closePopUp();
-                            closeBtn.disabled = false;
-                            updateBtn.disabled = false;
-                            closeBtn2.disabled = false; 
+
+                            loadDriversAsync(selectedInput)
+                            .then(() => {
+                                document.getElementById("vehicleNumber").value = driverId;
+                                document.getElementById("vehicleNumber").selectedInput = driverId;
+                                assignedDeliveryUpdate();
+                                closePopUp();
+                                closeBtn.disabled = false;
+                                updateBtn.disabled = false;
+                                closeBtn2.disabled = false; 
+                            })
+                            .catch(error => {
+                                window.location.reload();
+                            });
+
                         }else{
                             addDriverError.innerText = jsonRes.message;
                             closeBtn.disabled = false;
@@ -780,3 +852,136 @@ function updateVehicleStatus(id){
     var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
     xhr2.send(formData2);
 }
+
+
+document.getElementById('removeDNForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    
+    const selectedValue = document.getElementById("selectedIdForRemove").value;
+    const deliveryNumber = document.getElementById("rDnDeliveryNo").value;
+    const remark = document.getElementById("rDNRemark").value;
+
+    const errorText = document.getElementById("rDnErrorText");
+    const selectedRoute = document.getElementById('selectedRoute').value;
+    const removeBtn = document.getElementById("rDnRemove");
+    const closeBtn = document.getElementById("rDNClose");
+    const crossBtn = document.getElementById("rDNCross");
+
+    if(selectedValue != "" && deliveryNumber != "" && remark != ""){
+
+        removeBtn.disabled = true;
+        closeBtn.disabled = true;
+        crossBtn.disabled = true;
+
+        //update the ack status
+        errorText.innerText = "";
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open("POST", "backend/ras/removeFromAssign.php", true);
+        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr2.onreadystatechange = function () {
+            if (xhr2.readyState === 4) {
+                if (xhr2.status === 200) {
+                    let res2 = xhr2.responseText.toString();
+                    let jsonRes = JSON.parse(res2);
+                    if(jsonRes.requestStatus == 200){
+
+                        alert("Delivery updated successfully!");
+                        closePopUp();
+
+                        removeBtn.disabled = false;
+                        closeBtn.disabled = false;
+                        crossBtn.disabled = false;
+
+                        loadPending(selectedRoute);
+                        assignedDeliveryUpdate();
+
+                    }else{
+                        errorText.innerText = jsonRes.message;
+                        removeBtn.disabled = false;
+                        closeBtn.disabled = false;
+                        crossBtn.disabled = false;
+                    }
+                } else {
+                    errorText.innerText = "Something went wrong!";
+                    removeBtn.disabled = false;
+                    closeBtn.disabled = false;
+                    crossBtn.disabled = false;
+                }
+            }
+        };
+        const data2 = {
+            selectedDeliveryId: selectedValue,
+            deliveryNumber: deliveryNumber,
+            remark:remark
+
+        };
+        var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+        xhr2.send(formData2);
+    }else{
+        errorText.innerText = "Remark cannot be empty!";
+    }
+
+});
+
+document.getElementById('hDnForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const deliveryNo = document.getElementById("hDnDeliveryNumber").value;
+    const deliveryId = document.getElementById("hDnSelectedDelivery").value;
+    const remark = document.getElementById("hDNRemark").value;
+
+    const errorText = document.getElementById("hDnErrorText");
+    const removeBtn = document.getElementById("hDnHold");
+    const selectedRoute = document.getElementById('selectedRoute').value;
+    const closeBtn = document.getElementById("hDNClose");
+    const crossBtn = document.getElementById("hDnCross");
+
+    if(deliveryNo != "" && deliveryId != "" && remark != ""){
+        removeBtn.disabled = true;
+        closeBtn.disabled = true;
+        crossBtn.disabled = true;
+        errorText.innerText = "";
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open("POST", "backend/ras/holdDelivery.php", true);
+        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr2.onreadystatechange = function () {
+            if (xhr2.readyState === 4) {
+                if (xhr2.status === 200) {
+                    let res2 = xhr2.responseText.toString();
+                    let jsonRes = JSON.parse(res2);
+                    if(jsonRes.requestStatus == 200){
+
+                        alert("Delivery updated successfully!");
+                        closePopUp();
+                        removeBtn.disabled = false;
+                        closeBtn.disabled = false;
+                        crossBtn.disabled = false;
+                        loadPending(selectedRoute);
+
+                    }else{
+                        errorText.innerText = jsonRes.message;
+                        removeBtn.disabled = false;
+                        closeBtn.disabled = false;
+                        crossBtn.disabled = false;
+                    }
+                } else {
+                    errorText.innerText = "Something went wrong!";
+                    removeBtn.disabled = false;
+                    closeBtn.disabled = false;
+                    crossBtn.disabled = false;
+                }
+            }
+        };
+        const data2 = {
+            selectedDeliveryId: deliveryId,
+            deliveryNumber: deliveryNo,
+            remark:remark
+
+        };
+        var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
+        xhr2.send(formData2);
+
+    }else{
+        errorText.innerText = "Remark cannot be empty!";
+    }
+});

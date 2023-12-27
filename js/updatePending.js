@@ -1,3 +1,5 @@
+document.getElementById("deliveryNumberInput").focus();
+
 //scan delivery number
 var lastScannedValue = "";
 var scanDeliveryNo = document.getElementById("deliveryNumberInput");
@@ -95,8 +97,14 @@ function stopLoadingDN(){
     document.getElementById("addButtonUDN").innerHTML = `Add`;
     document.getElementById("addButtonUDN").disabled = false;
     document.getElementById("deliveryNumberInput").disabled = false;
+    document.getElementById("deliveryNumberInput").focus();
 }
 
+
+document.getElementById('updatePendingDNForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    addDeliveryNoByButton();
+});
 
 function addDeliveryNoByButton(){
     var enteredVal = document.getElementById("deliveryNumberInput").value;

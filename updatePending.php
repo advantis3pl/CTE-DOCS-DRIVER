@@ -16,15 +16,15 @@ include("partials/navbar.php");
         <div class="panel-wrapper">
             <div class="panel-body">
                 <div class="updateFormCon border p-3">
-                    <form method="POST" class="updateForm">
-
-                    <div class="updateFormControl">
-                        <label>Delivery No. : </label>
-                        <input type="text" class="iw60" id="deliveryNumberInput">
-                        <button class="btn btn-secondary" type="button" onclick="addDeliveryNoByButton()" class="d-block" id="addButtonUDN">
-                            Add
-                        </button>
-                    </div>
+                    <form method="POST" class="updateForm" id="updatePendingDNForm">
+                        <div class="updateFormControl">
+                            <label>Delivery No. : </label>
+                            <input type="text" class="iw60" id="deliveryNumberInput">
+                            <button class="btn btn-secondary" onclick="addDeliveryNoByButton()" class="d-block" id="addButtonUDN">
+                                Add
+                            </button>
+                        </div>
+                    </form>
 
                     <p class="text-danger" id="scanDNErrorUP"></p>
 
@@ -62,7 +62,6 @@ include("partials/navbar.php");
                     <p class="text-danger" id="updateError"></p>
                     <p class="text-success" id="updateSuccess"></p>
 
-                    </form>
                 </div>
             </div>
         </div>

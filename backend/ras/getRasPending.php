@@ -26,16 +26,29 @@ if(isset($_POST['selectedRoute'])){
     
         <?php
         while($delivery = $result->fetch_assoc()){
+
+            $classes = "";
+
+            if($delivery['return_status'] == "SDR"){
+                $classes = "bg-warning";
+            }else if($delivery['return_status'] == "ND"){
+                $classes = "bg-danger";
+            }else if($delivery['return_status'] == "hold"){
+                $classes = "bg-info";
+            }else{
+                $classes = "";
+            }
+
             ?>
             
-            <tr>
+            <tr class="<?php echo $classes; ?>">
                 <td class="border text-center p-1"><?php echo $delivery['delivery_no']; ?></td>
                 <td class="border text-center p-1"><?php echo $delivery['stp_code']; ?></td>
                 <td class="border text-center p-1"><?php echo $delivery['stp_name']; ?></td>
                 <td class="border text-center p-1"><?php echo $delivery['invoice_date']; ?></td>
                 <td class="border text-center p-1"><?php echo $delivery['created_by']; ?></td>
                 <td class="border text-center p-1">
-                    <button class="btn btn-danger" onclick="turnOnHold('<?php echo $delivery['delivery_no']; ?>')" id="deliveryHoldButton">-</button>
+                    <button class="btn btn-danger" onclick="turnOnHold('<?php echo $delivery['id']; ?>','<?php echo $delivery['delivery_no']; ?>','<?php echo $delivery['remark']; ?>')" id="deliveryHoldButton">-</button>
                 </td>
             </tr>
 
