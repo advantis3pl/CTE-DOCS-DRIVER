@@ -12,11 +12,11 @@ include("partials/navbar.php");
         <div class="panel-wrapper">
             <div class="panel-body">
                 <div class="updateFormCon border p-3">
-                    <form method="POST" class="updateForm">
+                    <form method="POST" class="updateForm" id="dHSearchForm">
                         <div class="updateFormControl">
                             <label>Delivery No. : </label>
                             <input type="text" class="iw60" id="dhScanDeliveryInput">
-                            <button type="button" class="btn btn-secondary" onclick="dhSearchDelivery()" id="searchDHButton">Search</button>
+                            <button class="btn btn-secondary" id="searchDHButton">Search</button>
                         </div>
 
                         <div class="updateFormControl">

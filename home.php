@@ -6,7 +6,17 @@ include("partials/navbar.php");
 
 	<div class="dashboardwidget disabled">
 		<div class="dashboardwidget-value">
-			5<span> - Documents</span>
+
+        <?php
+        
+        $sql = "SELECT COUNT(*) as count FROM delivery_report";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $recordCount = $row['count'];
+        echo number_format($recordCount);
+        
+        ?>
+        <span> - Documents</span>
 		</div>
 		<hr>
 		<div class="dashboardwidget-title">
@@ -16,7 +26,18 @@ include("partials/navbar.php");
 
 	<div class="dashboardwidget pass">
 		<div class="dashboardwidget-value">
-			0<span> - Deliveries</span>
+			
+        <?php
+        
+        $sql = "SELECT COUNT(*) as count FROM delivery";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $recordCount = $row['count'];
+        echo number_format($recordCount);
+        
+        ?>
+        
+        <span> - Deliveries</span>
 		</div>
 		<hr>
 		<div class="dashboardwidget-title">
@@ -25,20 +46,42 @@ include("partials/navbar.php");
 	</div>
 	<div class="dashboardwidget warn">
 		<div class="dashboardwidget-value">
-			0<span> - Pending</span>
+		
+        <?php
+        
+        $sql = "SELECT COUNT(*) as count FROM delivery WHERE ack_status = 'pending'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $recordCount = $row['count'];
+        echo number_format($recordCount);
+        
+        ?>
+        
+        <span> - Pending</span>
 		</div>
 		<hr>
 		<div class="dashboardwidget-title">
-            Deliveries that have a status of pending.
+            Total number of pending deliveries
 		</div>
 	</div>
 	<div class="dashboardwidget warn">
 		<div class="dashboardwidget-value">
-			0<span> - Drivers</span>
+		
+        <?php
+        
+        $sql = "SELECT COUNT(*) as count FROM client WHERE status = 'active'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $recordCount = $row['count'];
+        echo number_format($recordCount);
+        
+        ?>
+
+        <span> - Clients</span>
 		</div>
 		<hr>
 		<div class="dashboardwidget-title">
-			Total number of drivers
+			Total number of active clients
 		</div>
 	</div>
 	<div class="dashboardwidget disabled">
@@ -95,21 +138,30 @@ include("partials/navbar.php");
                     <tr>
                         <th>Username</th>
                         <th>Action</th>
+                        <th>Time</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Adithya</td>
-                        <td>2023-11-23 11:11:55</td>
-                    </tr>
-                    <tr>
-                        <td>Adithya</td>
-                        <td>2023-11-23 11:11:55</td>
-                    </tr>
-                    <tr>
-                        <td>Adithya</td>
-                        <td>2023-11-23 11:11:55</td>
-                    </tr>
+
+                    <?php
+                    
+                    $sql = "SELECT * FROM delivery_action WHERE user = ? ORDER BY id DESC LIMIT 10";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $userDbId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($hs_row = $result->fetch_assoc()) {
+                        ?>
+                            <tr>
+                                <td><?php echo $username; ?></td>
+                                <td><?php echo $hs_row['delivery_number'] . " - " . $hs_row['action']; ?></td>
+                                <td><?php echo $hs_row['action_date'] . " " . $hs_row['action_time']; ?></td>
+                            </tr>
+                        <?php
+                    }
+                    
+                    ?>
+
                 </tbody>
             </table>
         </div>

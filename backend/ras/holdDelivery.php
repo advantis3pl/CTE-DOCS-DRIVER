@@ -36,13 +36,13 @@ $remark = mysqli_real_escape_string($conn, $remark);
                 $hold = "hold";
                 $empty = "";
                 $zero = 0;
-                $q = "UPDATE delivery SET return_status = ? WHERE delivery_no = ?";
+                $q = "UPDATE delivery SET remark = ?, return_status = ? WHERE delivery_no = ?";
                 $s = $conn->prepare($q);
-                $s->bind_param('ss', $hold,$dno);
+                $s->bind_param('sss', $remark,$hold,$dno);
                 if($s->execute()){
 
                     $actoin_description = "Updated to hold";
-                    $action_remark = "";
+                    $action_remark = $remark;
                     $q_action = "INSERT INTO delivery_action(delivery_number,action_date,action_time,action,user,remark) VALUE (?,?,?,?,?,?)";
                     $s_action = $conn->prepare($q_action);
                     $s_action->bind_param('ssssis', $dno,$date,$time,$actoin_description,$userDbID,$action_remark);

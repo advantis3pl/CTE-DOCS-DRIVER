@@ -44,9 +44,11 @@ isset($_POST['route'])){
     $s = $conn->prepare($q);
     $s->bind_param('ssisiisssii', $name,$nic,$phone,$vehicle,$box,$parcel,$log,$date,$time,$userDbID,$currentRoute);
     if($s->execute()){
+        $lastInsertedId = $conn->insert_id;
         $response = array(
             'requestStatus' => 200,
-            'message' => 'Vehicle Added Successfully!'
+            'message' => 'Vehicle Added Successfully!',
+            'driverId' => $lastInsertedId
         );
         echo json_encode($response);
     }else{

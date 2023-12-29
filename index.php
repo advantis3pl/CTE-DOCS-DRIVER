@@ -25,7 +25,6 @@ include("config/conn.php");
 <body>
 
     <div class="loadingCon">
-        <img src="images/advantis.png" width="150" height="27" alt="" class="mb-1">
         <img src="images/loader.gif" width="50" height="50" alt="">
     </div>
     
@@ -33,6 +32,7 @@ include("config/conn.php");
 </html>
 
 <?php
+
     if(isset($_SESSION['user_id'])){
 
         $userId = $_SESSION['user_id'];

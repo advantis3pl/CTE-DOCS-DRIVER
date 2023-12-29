@@ -14,6 +14,14 @@ const actionFooter = `</tbody></table>`;
 
 const searchDHButton = document.getElementById("searchDHButton");
 
+//setting the focus on page load
+document.getElementById("dhScanDeliveryInput").focus();
+
+
+document.getElementById('dHSearchForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    dhSearchDelivery();
+});
 
 function dhSearchDelivery(){
     dhError.innerText = "";

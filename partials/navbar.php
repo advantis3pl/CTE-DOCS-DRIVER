@@ -25,6 +25,7 @@ if(isset($_SESSION['user_id'])){
     }else{
         $user = $result->fetch_assoc();
         $userId = $user['userKey'];
+        $userDbId = $user['id'];
         $username = $user['username'];
         $user_firstName = $user['firstName'];
         $user_lastName = $user['lastName'];

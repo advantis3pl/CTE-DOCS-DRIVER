@@ -25,9 +25,12 @@ include("partials/navbar.php");
                     <td class="d-flex stpReportLabel">Report </td>
                     <td class="stpReportLabel">
                         <select name="stpReportType" id="stpReportType">
-                            <option value="distribution_summary_report">Destribution Summary Report</option>
+                            
+                            <!--
                             <option value="sdr_report">SDR Report</option>
                             <option value="nddn_report">Not Delivered DN Report</option>
+                            -->
+
                             <option value="pending_collection_report">Pending Delivery Report</option>
                             <option value="customer_collection_report">Customer Collection Report</option>
                             <option value="special_collection_report">Special Delivery Report</option>

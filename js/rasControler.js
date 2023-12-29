@@ -269,11 +269,21 @@ function saveDriverDetails(){
                         let jsonRes = JSON.parse(res2);
                         if(jsonRes.requestStatus == 200){
                             alert(jsonRes.message);
-                            loadDrivers(selectedInput);
-                            aDCross.disabled = false;
-                            aDSave.disabled = false;
-                            aDClose.disabled = false;
-                            closePopUp();
+
+                            loadDriversAsync(selectedInput)
+                            .then(() => {
+                                aDCross.disabled = false;
+                                aDSave.disabled = false;
+                                aDClose.disabled = false;
+                                closePopUp();
+                                document.getElementById("vehicleNumber").value = jsonRes.driverId;
+                                document.getElementById("vehicleNumber").selectedInput = jsonRes.driverId;
+                                assignedDeliveryUpdate();
+                            })
+                            .catch(error => {
+                                window.location.reload();
+                            });
+
                         }else{
                             addDriverError.innerText = jsonRes.message;
                             aDCross.disabled = false;

@@ -149,6 +149,8 @@ function getDataBySearch(){
                     routeList.style.pointerEvents = "auto";
                     routeList.style.opacity = 1;
 
+                    document.getElementById("searchedDateContainer").innerText = `Results for : ${date}`;
+
                 }else{
                     alert("Something went wrong while loading the data!");
                 }
@@ -377,6 +379,7 @@ function UpdateAsNotDeliveredDN(){
         xhr2.send(formData2);
 
     }else{
+        stopLoadingND();
         nddnError.innerText = `Remark cannot be empty!`;
     }
 }
@@ -439,6 +442,7 @@ function UpdateAsSameDayReturn(){
 
 
     }else{
+        stopLoadingSDR();
         sdrError.innerText = `Remark cannot be empty!`;
     }
 }

@@ -88,6 +88,8 @@ include("partials/navbar.php");
                 <button class="btn btn-secondary" onclick="getDataBySearch()">Search</button>
             </div>
 
+            <p class="text-center text-secondary" id="searchedDateContainer"></p>
+
             <table class="w-100" id="rrRouteList">
                 <tr>
                     <td class="text-center font-bold border border-dark">Route No.</td>

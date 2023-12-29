@@ -34,9 +34,9 @@ if( isset($_POST['selectedDeliveryId']) &&
                 $pending = "pending";
                 $empty = "";
                 $zero = 0;
-                $q = "UPDATE delivery SET ack_status = ?, driverId = ? , assigned_time = ? , assigned_date = ? WHERE delivery_no = ?";
+                $q = "UPDATE delivery SET remark = ? , ack_status = ?, driverId = ? , assigned_time = ? , assigned_date = ? WHERE delivery_no = ?";
                 $s = $conn->prepare($q);
-                $s->bind_param('sisss', $pending,$zero,$empty,$empty,$dno);
+                $s->bind_param('ssisss', $remark,$pending,$zero,$empty,$empty,$dno);
                 if($s->execute()){
 
                     $q_driver = "SELECT * FROM driver WHERE id = ?";
