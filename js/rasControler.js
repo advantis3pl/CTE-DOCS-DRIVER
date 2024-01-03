@@ -458,11 +458,10 @@ scanDeliveryNoElement.addEventListener("input", function() {
                     if(jsonRes.requestStatus == 200){
                         closePopUp();
                         lastScannedValue = "";
-
                         loadPending(selectedRoute.value);
                         assignedDeliveryUpdate();
                         stopScanDNLoading();
-
+                        turnOnScan();
                     }else{
                         scanDNError.innerText = jsonRes.message;
                         stopScanDNLoading();
@@ -522,10 +521,10 @@ function assignSDN(){
                     if(jsonRes.requestStatus == 200){
                         closePopUp();
                         lastScannedValue = "";
-
                         loadPending(selectedRoute.value);
                         assignedDeliveryUpdate();
                         stopScanDNLoading();
+                        turnOnScan();
 
                     }else{
                         scanDNError.innerText = jsonRes.message;
@@ -589,6 +588,8 @@ function stopScanDNLoading(){
 
     document.getElementById("scanDNLoadingImg").classList.remove("d-block");
     document.getElementById("scanDNLoadingImg").classList.add("d-none");
+
+    dn.focus();
 }
 
 

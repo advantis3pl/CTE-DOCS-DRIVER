@@ -38,6 +38,8 @@ function closePopUp(){
     document.getElementById("scanSTPcode").value = '';
     document.getElementById("scanCustomerName").value = '';
 
+    document.getElementById("scanDNError").innerText = ``;
+
 }
 
 function closeUserPopUp(){
