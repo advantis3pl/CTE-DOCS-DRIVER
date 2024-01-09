@@ -66,6 +66,10 @@ include("partials/navbar.php");
                     </td>
                 </tr>
                 <tr>
+                    <td class="d-flex">Main Route (RAS)</td>
+                    <td colspan="2"><input type="text" id="mainRouteNumber" name="mainRouteNumber" readonly></td>
+                </tr>
+                <tr>
                     <td colspan="3">
                         <p class="text-danger text-right" id="shiptopartyFormError"></p>
                         <p class="text-success text-right" id="shiptopartyFormSuccess"></p>

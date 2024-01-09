@@ -17,7 +17,7 @@ if(isset($_POST['searchedDate'])){
 
     $query = "SELECT * FROM driver WHERE printedDate = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('s', $date);
+    $stmt->bind_param('s', $formattedDate);
     if($stmt->execute()){
         
         $result = $stmt->get_result();

@@ -134,11 +134,11 @@ include("partials/navbar.php");
             </div>
         </div>
 
-        <form id="scanDNForm">
+        <form method="POST" id="scanDNForm">
             <table class="mt-3">
                 <tr>
                     <td class="d-flex tableRowName">Delivery No.  <b class="text-danger"> &nbsp *</b></td>
-                    <td class="tableRowData"><input type="text" name="scanDeliveryNo" id="scanDeliveryNo"></td>
+                    <td class="tableRowData"><input type="text" name="scanDeliveryNo" id="scanDeliveryNo" autofocus required></td>
                 </tr>
 
                 <tr>
@@ -155,7 +155,7 @@ include("partials/navbar.php");
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
                 <p class="text-danger" id="scanDNError"></p>
                 <div>
-                    <button class="btn btn-primary" id="scanDNAssignButton" onclick="assignSDN()">Assign</button>
+                    <button class="btn btn-primary" id="scanDNAssignButton" type="submit">Assign</button>
                     <button type="button" class="btn btn-danger" onclick="closePopUp()" id="scanDNCloseButton">Close</button>
                 </div>
             </div>
@@ -175,7 +175,7 @@ include("partials/navbar.php");
             <button class="btn btn-danger" onclick="closePopUp()" id="hDnCross">X</button>
         </div>
 
-        <form post="POST" id="hDnForm">
+        <form method="POST" id="hDnForm">
             <table class="mt-3">
                 <tr>
                     <td class="d-flex tableRowName">Delivery No. </td>
@@ -208,7 +208,7 @@ include("partials/navbar.php");
             <button class="btn btn-danger" onclick="closePopUp()" id="rDNCross">X</button>
         </div>
 
-        <form post="POST" id="removeDNForm">
+        <form method="POST" id="removeDNForm">
             <table class="mt-3">
                 <tr>
                     <td class="d-flex tableRowName">Delivery No. </td>
@@ -239,7 +239,6 @@ include("partials/navbar.php");
 <p class="border-bottom p-2">RAS</p>
 
 <div class="d-flex w-100 h-100">
-    
     <div class="routeCon">
         <div class="rasTopBar">
             <h6>Today's Route</h6>
@@ -257,16 +256,17 @@ include("partials/navbar.php");
 
                 <?php
 
-                    $query = "SELECT * FROM route";
+                    $query = "SELECT DISTINCT m_id FROM route";
                     $stmt = $conn->prepare($query);
                     $stmt->execute();
                     $result = $stmt->get_result();
+
 
                     $counter = 0;
             
                     while($route = $result->fetch_assoc()){
 
-                        $routeId = $route['id'];
+                        $routeId = $route['m_id'];
 
                         $queryPending = "SELECT COUNT(*) FROM delivery WHERE route = ? AND ack_status = 'pending'";
                         $stmtPending = $conn->prepare($queryPending);
@@ -274,20 +274,34 @@ include("partials/navbar.php");
                         $stmtPending->execute();
                         $countPending = $stmtPending->get_result()->fetch_assoc()['COUNT(*)']; 
 
+                        // $queryAssigned = "SELECT COUNT(*) FROM delivery
+                        // WHERE route = ? AND ack_status = 'assigned' AND isPrinted = 'false'";
+                        // $stmtAssigned = $conn->prepare($queryAssigned);
+                        // $stmtAssigned->bind_param('i', $routeId);
+                        // $stmtAssigned->execute();
+                        // $countAssigned = $stmtAssigned->get_result()->fetch_assoc()['COUNT(*)'];
+
                         $queryAssigned = "SELECT COUNT(*) FROM delivery
-                        WHERE route = ? AND ack_status = 'assigned' AND isPrinted = 'false'";
+                                            INNER JOIN driver ON delivery.driverId = driver.id
+                                            WHERE delivery.route = ? 
+                                            AND delivery.ack_status = 'assigned' 
+                                            AND (driver.isPrinted = 'false'
+                                                OR (driver.isPrinted = 'true'
+                                                    AND TIMEDIFF(NOW(), CONCAT(driver.printedDate, ' ', driver.printedTime)) < '12:00:00')
+                                                )";
                         $stmtAssigned = $conn->prepare($queryAssigned);
                         $stmtAssigned->bind_param('i', $routeId);
                         $stmtAssigned->execute();
                         $countAssigned = $stmtAssigned->get_result()->fetch_assoc()['COUNT(*)'];
 
+
                         ?>
 
-                        <tr class="routeBarRow" onclick="routeClick('<?php echo $route['id']; ?>','routeBar<?php echo $counter; ?>')" id="routeBar<?php echo $counter;?>">
-                            <td class="routeTableBar p-1"><?php echo $route['id']; ?></td>
+                        <tr class="routeBarRow" onclick="routeClick('<?php echo $route['m_id']; ?>','routeBar<?php echo $counter; ?>')" id="routeBar<?php echo $counter;?>">
+                            <td class="routeTableBar p-1"><?php echo $route['m_id']; ?></td>
                             <td class="routeTableBar p-1"><?php echo $countPending; ?></td>
                             <td class="routeTableBar p-1"><?php echo $countAssigned; ?></td>
-                        </tr>
+                        </tr> 
 
                         <input type="text" hidden id="selectedRoute">
 

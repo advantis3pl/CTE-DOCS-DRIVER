@@ -82,6 +82,7 @@ if(isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,300italic,400italic,600italic">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-2.2.4.js"></script>-->
     
     <!--for html to pdf-->
     <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
@@ -95,11 +96,8 @@ if(isset($_SESSION['user_id'])){
     <script src="js/user.js?v=4"></script>
     <script src="js/profile.js?v=2"></script>
     <script src="js/manageStp.js?v=2"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
-
 </head>
 <body>
     <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column navClose" id="sidebar">

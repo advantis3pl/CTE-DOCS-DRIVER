@@ -62,14 +62,17 @@ function addDelivery(scannedValue){
                         pendingDeliveries.push([jsonRes.dn , jsonRes.stpCode , jsonRes.stpName , jsonRes.remark]);
                         stopLoadingDN();
                         refreshPendingDeliveries();
+                        selectText("deliveryNumberInput");
     
                     }else{
                         scanDNError.innerText = jsonRes.message;
                         stopLoadingDN();
+                        selectText("deliveryNumberInput");
                     }
                 } else {
                     scanDNError.innerText = "Something went wrong!";
                     stopLoadingDN();
+                    selectText("deliveryNumberInput");
                 }
             }
         };
@@ -84,6 +87,12 @@ function addDelivery(scannedValue){
     }else{
         scanDNError.innerText = "Already added!";
     }
+}
+
+function selectText(elementId) {
+    var inputField = document.getElementById(elementId);
+    inputField.select();
+    inputField.setSelectionRange(0, inputField.value.length);
 }
 
 function startLoadingUDN(){
@@ -101,6 +110,12 @@ function stopLoadingDN(){
 }
 
 
+$('#deliveryNumberInput').keyup(function(){
+    if(this.value.length == 10){
+        $('#addButtonUDN').click();
+    }
+});
+
 document.getElementById('updatePendingDNForm').addEventListener('submit', function (event) {
     event.preventDefault();
     addDeliveryNoByButton();
@@ -112,6 +127,7 @@ function addDeliveryNoByButton(){
         addDelivery(enteredVal);
     }
 }
+
 
 
 function refreshPendingDeliveries(){

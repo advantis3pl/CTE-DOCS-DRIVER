@@ -239,6 +239,8 @@ if(isset($_POST['reportType']) && isset($_POST['from']) && isset($_POST['to'])){
                         "Scan Status",
                         "Driver Name",
                         "Vehicle No",
+                        "Assigned Date",
+                        "Assigned Time",
                         "Remark"
                     );
                 }
@@ -253,6 +255,8 @@ if(isset($_POST['reportType']) && isset($_POST['from']) && isset($_POST['to'])){
                 $createdBy = $row['created_by'];
                 $routeNumber = $row['route'];
                 $vehicleId = $row['driverId'];
+                $assignedDate = $row['assigned_date'];
+                $assignedTime = $row['assigned_time'];
                 
                 $vehicleNumber = "";
                 $driverName = "";
@@ -272,7 +276,7 @@ if(isset($_POST['reportType']) && isset($_POST['from']) && isset($_POST['to'])){
                             $invoiceDate,
                             $deliveryNumber,
                             $stp,$stpName,$createdBy,$routeNumber,$route,$status,$scannedStatus,
-                            $driverName,$vehicleNumber,$remark
+                            $driverName,$vehicleNumber,$assignedDate,$assignedTime,$remark
                         );
 
                     }else{
@@ -289,7 +293,7 @@ if(isset($_POST['reportType']) && isset($_POST['from']) && isset($_POST['to'])){
                                 $invoiceDate,
                                 $deliveryNumber,
                                 $stp,$stpName,$createdBy,$routeNumber,$route,$status,$scannedStatus,
-                                $driverName,$vehicleNumber,$remark
+                                $driverName,$vehicleNumber,$assignedDate,$assignedTime,$remark
                             );
                         }
 

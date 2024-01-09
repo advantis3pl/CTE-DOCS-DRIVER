@@ -24,6 +24,13 @@ if(isset($_POST['clientID'])){
         $added_by = $client['added_by'];
         $added_date_time = $client['added_date_time'];
 
+        $q_route = "SELECT * FROM route WHERE id = ?";
+        $s_route = $conn->prepare($q_route);
+        $s_route->bind_param('i', $route);
+        $s_route->execute();
+        $r_route = $s_route->get_result();
+        $m_route = $r_route->fetch_assoc();
+
         $response = array(
             'requestStatus' => 200,
             'message' => 'Success',
@@ -35,7 +42,8 @@ if(isset($_POST['clientID'])){
             'route' => $route,
             'status' => $status,
             'added_by' => $added_by,
-            'added_date_time' => $added_date_time
+            'added_date_time' => $added_date_time,
+            'mainRoute' => $m_route['m_id']
         );
     
         echo json_encode($response);

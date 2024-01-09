@@ -97,7 +97,7 @@ include("partials/navbar.php");
 
                 <?php
                 
-                    $query = "SELECT * FROM route";
+                    $query = "SELECT DISTINCT m_id FROM route";
                     $stmt = $conn->prepare($query);
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -105,7 +105,7 @@ include("partials/navbar.php");
                     $counter = 0;
             
                     while($route = $result->fetch_assoc()){
-                        $routeId = $route['id'];
+                        $routeId = $route['m_id'];
                         ?>
                         
                         <tr class="routeBarRow">

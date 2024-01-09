@@ -489,6 +489,11 @@ scanDeliveryNoElement.addEventListener("input", function() {
 });
 
 
+$('#scanDeliveryNo').keyup(function(){
+    if(this.value.length == 10){
+        $('#scanDNAssignButton').click();
+    }
+});
 document.getElementById('scanDNForm').addEventListener('submit', function (event) {
     event.preventDefault();
     assignSDN();
@@ -525,14 +530,17 @@ function assignSDN(){
                         assignedDeliveryUpdate();
                         stopScanDNLoading();
                         turnOnScan();
+                        selectText("scanDeliveryNo");
 
                     }else{
                         scanDNError.innerText = jsonRes.message;
                         stopScanDNLoading();
+                        selectText("scanDeliveryNo");
                     }
                 } else {
                     scanDNError.innerText = "Something went wrong!";
                     stopScanDNLoading();
+                    selectText("scanDeliveryNo");
                 }
             }
         };
@@ -548,6 +556,11 @@ function assignSDN(){
 
     }
 
+}
+function selectText(elementId) {
+    var inputField = document.getElementById(elementId);
+    inputField.select();
+    inputField.setSelectionRange(0, inputField.value.length);
 }
 
 
@@ -769,11 +782,9 @@ function printAssigned(){
     
     const selectedVehicle = document.getElementById("vehicleNumber").value;
 
-    //start loading
     disableVehicleSettings();
     disableAssignedActions();
     turnOnAssignedDeliveryLoader("on");
-
 
     var xhr2 = new XMLHttpRequest();
     xhr2.open("POST", "backend/ras/getDNPrint.php", true);
@@ -782,13 +793,17 @@ function printAssigned(){
         if (xhr2.readyState === 4) {
             if (xhr2.status === 200) {
                 let res2 = xhr2.responseText.toString();
-
                 if(res2 == "500"){
                     alert("Failed to download the report");
                     ableVehicleSettings();
                     ableassignedactions();
                     turnOnAssignedDeliveryLoader("off");
 
+                }else if(res2 == "501"){
+                    alert("Failed to download. No of boxes and parcels are empty!");
+                    ableVehicleSettings();
+                    ableassignedactions();
+                    turnOnAssignedDeliveryLoader("off");
                 }else{
                     downloadPDF(res2,selectedVehicle);
                 }

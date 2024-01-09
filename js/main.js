@@ -47,4 +47,3 @@ function closeUserPopUp(){
     popUpContainer5.style.display = "none";
     document.getElementById("auFormError").innerText = "";
 }
-

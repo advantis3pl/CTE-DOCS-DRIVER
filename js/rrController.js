@@ -141,7 +141,7 @@ function getDataBySearch(){
                 
                 let res2 = xhr2.responseText.toString();
                 let jsonRes = JSON.parse(res2);
-                
+
                 if(jsonRes.requestStatus == 200){
                     vehicles = JSON.parse(jsonRes.vehicles);
                     assigned = JSON.parse(jsonRes.assigned);

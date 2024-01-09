@@ -37,7 +37,13 @@ isset($_POST['report'])){
             $clientsThatNotAvailable[] = $stpCode;
         }else{
             $cl = $result->fetch_assoc();
-            $routes[] = $cl['route'];
+            $q_route = "SELECT * FROM route WHERE id = ?";
+            $s_route = $conn->prepare($q_route);
+            $s_route->bind_param('i', $cl['route']);
+            $s_route->execute();
+            $r_route = $s_route->get_result();
+            $r_m = $r_route->fetch_assoc();
+            $routes[] = $r_m['m_id'];
         }
 
     }

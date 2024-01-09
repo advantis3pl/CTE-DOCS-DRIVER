@@ -18,6 +18,11 @@ const searchDHButton = document.getElementById("searchDHButton");
 document.getElementById("dhScanDeliveryInput").focus();
 
 
+$('#dhScanDeliveryInput').keyup(function(){
+    if(this.value.length == 10){
+        $('#searchDHButton').click();
+    }
+});
 document.getElementById('dHSearchForm').addEventListener('submit', function (event) {
     event.preventDefault();
     dhSearchDelivery();
@@ -127,6 +132,12 @@ function loadDeliveryData(dnNum){
 
     var formData2 = Object.keys(data2).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data2[key])).join('&');
     xhr2.send(formData2);
+}
+
+function selectText(elementId) {
+    var inputField = document.getElementById(elementId);
+    inputField.select();
+    inputField.setSelectionRange(0, inputField.value.length);
 }
 
 

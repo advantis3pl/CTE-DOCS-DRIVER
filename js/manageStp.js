@@ -10,6 +10,7 @@ function searchClient(){
     const status = document.getElementById("clientStatus");
     const errorCon = document.getElementById("shiptopartyFormError");
     const successCon = document.getElementById("shiptopartyFormSuccess");
+    const mainRouteNumber = document.getElementById("mainRouteNumber");
     const btnCode = `<Button class="btn btn-secondary" onclick="searchClient()">Search</Button>`;
     const loaderCode = `<img src="images/loader.gif" alt="" width="30" height="30"></img>`;
 
@@ -25,6 +26,7 @@ function searchClient(){
         address.value = "";
         route.value = "";
         status.value = "";
+        mainRouteNumber.value = "";
 
         searchBtnCon.innerHTML = loaderCode;
         var xhr = new XMLHttpRequest();
@@ -44,6 +46,7 @@ function searchClient(){
                     route.value = resObject.route;
                     status.value = resObject.status;
                     searchBtnCon.innerHTML = btnCode;
+                    mainRouteNumber.value = resObject.mainRoute;
                 }else{
 
                     errorCon.innerText = resObject.message; 
@@ -81,6 +84,7 @@ function resetShipToPartyForm(){
     const currentCode = document.getElementById("currentCode");
     const successCon = document.getElementById("shiptopartyFormSuccess");
     const errorCon = document.getElementById("shiptopartyFormError");
+    const mainRouteNumber = document.getElementById("mainRouteNumber");
     
     errorCon.innerText = "";
     successCon.innerText = "";
@@ -92,6 +96,7 @@ function resetShipToPartyForm(){
     route.value = "";
     status.value = "";
     currentCode.value = "";
+    mainRouteNumber.value = "";
 }
 
 
@@ -190,6 +195,7 @@ function updateClient(){
     const status = document.getElementById("clientStatus");
     const errorCon = document.getElementById("shiptopartyFormError");
     const successCon = document.getElementById("shiptopartyFormSuccess");
+    const mainRouteNumber = document.getElementById("mainRouteNumber");
     const btnCode = `<Button class="btn btn-secondary" onclick="searchClient()">Search</Button>`;
     const loaderCode = `<img src="images/loader.gif" alt="" width="30" height="30"></img>`;
 
@@ -216,10 +222,9 @@ function updateClient(){
                 if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                     let res = xhr.responseText
                     let resObject = JSON.parse(res);
-
                     if(resObject.requestStatus == 200){
+                        searchClient();
                         successCon.innerText = `Client updated successfully!`;
-                        searchBtnCon.innerHTML = btnCode;
                     }else{
                         errorCon.innerText = resObject.message; 
                         searchBtnCon.innerHTML = btnCode;
@@ -237,7 +242,8 @@ function updateClient(){
                 address : address.value,
                 city : city.value,
                 route : route.value,
-                status : status.value
+                status : status.value,
+                mainRoute: mainRouteNumber.value
             };
             var formData = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
             xhr.send(formData);
