@@ -25,12 +25,9 @@ include("partials/navbar.php");
                     <td class="d-flex stpReportLabel">Report </td>
                     <td class="stpReportLabel">
                         <select name="stpReportType" id="stpReportType">
-                            
-                            <!--
+                            <option value="distribution_summary">Distribution Summary</option>
                             <option value="sdr_report">SDR Report</option>
                             <option value="nddn_report">Not Delivered DN Report</option>
-                            -->
-
                             <option value="pending_collection_report">Pending Delivery Report</option>
                             <option value="customer_collection_report">Customer Collection Report</option>
                             <option value="special_collection_report">Special Delivery Report</option>
@@ -58,17 +55,23 @@ include("partials/navbar.php");
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
                 <p class="text-danger" id="stpError"></p>
                 <div>
-                    <button type="button" class="btn btn-success" onclick="stpDownloadExcel()" id="downloadExcelBtn">Excel</button>
-                    <button type="button" class="btn btn-danger" onclick="stpDownloadPDF()" id="downloadPDFBtn">PDF</button>
+                    <button type="button" class="btn btn-success" onclick="downloadReport('excel')" id="downloadExcelBtn">Excel</button>
+                    <button type="button" class="btn btn-danger" onclick="downloadReport('pdf')" id="downloadPDFBtn">PDF</button>
                 </div>
             </div>
         </form> 
-
 
     </div>
 
 
 </div>
+
+
+<div id="stpReportView"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/jspdf-autotable"></script>
+
 <script src="js/stpController.js"></script>
 
 <?php

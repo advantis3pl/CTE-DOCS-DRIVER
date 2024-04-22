@@ -3,64 +3,74 @@
 include("partials/navbar.php");
 include("partials/adminAuth.php");
 
-if(isset($_GET['id'])){
-    $history_username = $_GET['id'];
 
-    $query = "SELECT * FROM user WHERE username = ?";
+if(isset($_GET['id'])){
+    $history_userId = $_GET['id'];
+
+    $query = "SELECT * FROM user WHERE id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('s', $history_username);
+    $stmt->bind_param('i', $history_userId);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows === 1) {
         $userData = $result->fetch_assoc();
+        $actionUsername = $userData['username'];
         ?>
+        
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <div class="justify-content-center align-items-center d-flex">
 
-            <input type="text" hidden id="huid" value="<?php echo $userData['id']; ?>">
-            <input type="text" hidden id="huusername" value="<?php echo $history_username;?>">
+            <input type="text" hidden name="huid" id="huid" value="<?php echo $history_userId; ?>">
 
             <div class="w-100">
-                <h4>Login History (<?php echo $history_username; ?>) <a href="users.php"> < Back to Users</a></h4>
+                <h4>Login History (<?php echo $actionUsername; ?>) <a href="users.php"> < Back to Users</a></h4>
+                
+
+
                 <table class="w-100 table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <td class="font-bold">Username</td>
-                            <td class="font-bold">Login Time</td>
-                        </tr>
-                    </thead>
-                    <tbody id="userLogins">
-
-                    </tbody>
-                </table>
-
-                <div id="loadingIndicator" style="display: none; text-align: center;">
-                    Loading...
-                </div>
+                <thead>
+                    <tr>
+                        <th class="font-bold">Delivery Number</th>
+                        <th class="font-bold">Date / Time</th>
+                        <th class="font-bold">Action</th>
+                        <th class="font-bold">Remark</th>
+                    </tr>
+                </thead>
+                <tbody id="loadingAppend">
+                    <?php
+                    // Your PHP code for initial data load
+                    ?>
+                </tbody>
+            </table>
+            <!-- Loading indicator -->
+            <div id="loadingIndicator" style="display: none; text-align: center;">
+                Loading...
+            </div>
             </div>
     
         </div>
+
+
 
 
         <script>
             
             $(document).ready(function() {
                 var loading = false;
-                var dataLimit = 25;
+                var dataLimit = 100;
                 var lastRecordId = 0; // Initialize with the initial value
-                var username = document.getElementById("huusername").value;
+                var userId = document.getElementById("huid").value;
                 var working = true;
 
                 function loadMoreData() {
-                    console.log(lastRecordId);
-                    if (working) {
+                    if(working){
                         loading = true;
                         $('#loadingIndicator').show();
 
                         $.ajax({
-                            url: 'backend/history/loginHistory.php',
+                            url: 'backend/history/loadActions.php',
                             method: 'POST',
-                            data: { username: username, limit: dataLimit, lastRecordId: lastRecordId },
+                            data: { uid: userId, limit: dataLimit, lastRecordId: lastRecordId },
                             dataType: 'json',
                             success: function(response) {
                                 if (response.length === 0) {
@@ -71,10 +81,12 @@ if(isset($_GET['id'])){
                                 }
 
                                 $.each(response, function(index, row) {
-                                    $('#userLogins').append(`
+                                    $('#loadingAppend').append(`
                                         <tr>
-                                            <td>${row.id}</td>
-                                            <td>${row.login_time}</td>
+                                            <td>${row.delivery_number}</td>
+                                            <td>${row.action_date +" / "+ row.action_time}</td>
+                                            <td>${row.action}</td>
+                                            <td>${row.remark}</td>
                                         </tr>
                                     `);
                                     lastRecordId = row.id;

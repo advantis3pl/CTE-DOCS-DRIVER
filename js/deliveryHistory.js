@@ -75,6 +75,7 @@ function loadDeliveryData(dnNum){
         if (xhr2.readyState === 4) {
             if (xhr2.status === 200) {
                 let res2 = xhr2.responseText.toString();
+                
                 let jsonRes = JSON.parse(res2);
 
                 startDHLoading("Off");

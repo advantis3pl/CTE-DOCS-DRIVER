@@ -159,6 +159,7 @@ include("partials/navbar.php");
                             <td class="font-bold border text-center p-1">STP Code</td>
                             <td class="font-bold border text-center p-1">Customer Name</td>
                             <td class="font-bold border text-center p-1">Ack Status</td>
+                            <td class="font-bold border text-center p-1">Scan Status</td>
                         </tr>
                         
                     </table>

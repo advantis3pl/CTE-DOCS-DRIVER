@@ -141,7 +141,8 @@ include("partials/adminAuth.php");
             <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
                 <p></p>
                 <div>
-                    <a class="m-2 cursor-pointer" onclick="loginHistory()">Login History</a>
+                    <a class="m-2 pointer" onclick="loginHistory()">Login History</a>
+                    <a class="m-2 pointer" onclick="actionHistory()">Action History</a>
                     <button type="button" class="btn btn-primary" onclick="updateUserDetails()">Update</button>
                     <button type="button" class="btn btn-danger" onclick="userDeleteWindow()">Remove</button>
                     <button type="button" class="btn btn-success" onclick="resetVUuserDetails()">Reset</button>

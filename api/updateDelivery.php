@@ -58,6 +58,13 @@ function updateDeliveryStatus() {
 
                             // Check for success and send appropriate response
                             if ($stmt->affected_rows > 0) {
+                                $actoin_description = "Scanned and uploaded to the DMS";
+                                $userDbID = 0;
+                                $action_remark = "Document Uploaded";
+                                $q_action = "INSERT INTO delivery_action(delivery_number,action_date,action_time,action,user,remark) VALUE (?,?,?,?,?,?)";
+                                $s_action = $conn->prepare($q_action);
+                                $s_action->bind_param('ssssis', $deliveryNo,$date,$time,$actoin_description,$userDbID,$action_remark);
+                                $s_action->execute();
                                 sendResponse(true, 200, "Delivery updated successfully");
                             } else {
                                 sendResponse(false, 500, "Internal server error");

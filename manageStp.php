@@ -4,7 +4,6 @@ include("partials/navbar.php");
 
 ?>
 
-
 <p class="border-bottom p-2">Manage STP</p>
 
 

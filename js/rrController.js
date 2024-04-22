@@ -16,6 +16,7 @@ var assignedTableTop = `<table><tr>
     <td class="font-bold border text-center p-1">STP Code</td>
     <td class="font-bold border text-center p-1">Customer Name</td>
     <td class="font-bold border text-center p-1">Ack Status</td>
+    <td class="font-bold border text-center p-1">Scan Status</td>
 </tr>`;
 var returnTableTop = `<table><tr>
     <td class="font-bold border text-center p-1">Delivery No</td>
@@ -195,12 +196,21 @@ function loadAssignedDeliveries(id){
     for(var i = 0; i < assigned.length; i++){
         if(assigned[i]['driverId'] == id){
             filteredAssigned.push(assigned[i]);
+
+            let scanStatus;
+            if(assigned[i]['updated_status'] == "scan_pending"){
+                scanStatus = "Pending";
+            }else{
+                scanStatus = "Scanned";
+            }
+
             assignedBody = `${assignedBody} 
-            <tr class="assignedDeliveryElements" onclick="selectAssignedDelivery('${assigned[i]['id']}','${assigned[i]['delivery_no']}','assignedDelivery${assigned[i]['id']}')" id="assignedDelivery${assigned[i]['id']}">
+            <tr class="assignedDeliveryElements" onclick="selectAssignedDelivery('${assigned[i]['id']}','${assigned[i]['delivery_no']}','${assigned[i]['updated_status']}','assignedDelivery${assigned[i]['id']}')" id="assignedDelivery${assigned[i]['id']}">
                 <td class="border text-center p-1">${assigned[i]['delivery_no']}</td>
                 <td class="border text-center p-1">${assigned[i]['stp_code']}</td>
                 <td class="border text-center p-1">${assigned[i]['stp_name']}</td>
                 <td class="border text-center p-1">${assigned[i]['ack_status']}</td>
+                <td class="border text-center p-1">${scanStatus}</td>
             </tr>`;
 
         }
@@ -255,17 +265,18 @@ function loadReturnDeliveries(id){
 }
 
 
-function selectAssignedDelivery(id,deliveryNumber,element){
-    var routeBars = document.getElementsByClassName("assignedDeliveryElements");
-    for (var i = 0; i < routeBars.length; i++) {
-        routeBars[i].style.background = "white";
+function selectAssignedDelivery(id,deliveryNumber,scanStatus,element){
+    if(scanStatus == "scan_pending"){
+        var routeBars = document.getElementsByClassName("assignedDeliveryElements");
+        for (var i = 0; i < routeBars.length; i++) {
+            routeBars[i].style.background = "white";
+        }
+        document.getElementById(element).style.background = "#8ea0bd";
+        document.getElementById("selectedDeliveryId").value = id;
+        document.getElementById("selectedDeliveryNumber").value = deliveryNumber;
+        document.getElementById("NDButton").disabled = false;
+        document.getElementById("SDRButton").disabled = false;
     }
-    document.getElementById(element).style.background = "#8ea0bd";
-    document.getElementById("selectedDeliveryId").value = id;
-    document.getElementById("selectedDeliveryNumber").value = deliveryNumber;
-    document.getElementById("NDButton").disabled = false;
-    document.getElementById("SDRButton").disabled = false;
-
 }
 
 

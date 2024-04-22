@@ -3,6 +3,8 @@
 session_start();
 include("config/conn.php");
 
+$_SESSION['navBarStatus'] = "Off";
+unset($_SESSION['navBarStatus']);
 
 if(isset($_SESSION['user_id'])){
 
@@ -222,3 +224,13 @@ if(isset($_SESSION['user_id'])){
         </div>
         <input type="text" hidden id="isNavOpen" value="0">
     </div>
+
+    <?php
+    if(isset($_SESSION['setNavBarSession']) == "On"){
+        ?>
+        <script>
+            navOpCl();
+        </script>
+        <?php
+    }
+    ?>

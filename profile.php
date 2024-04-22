@@ -12,7 +12,7 @@ include("partials/navbar.php");
     <table class="table table-striped">
         <tr>
             <td>Username : </td>
-            <td><input type="text" class="form-control" name="profile_username" id="profile_username" value="<?php echo $username; ?>"></td>
+            <td><input type="text" class="form-control" name="profile_username" id="profile_username" value="<?php echo $username; ?>" readonly></td>
         </tr>
         <tr>
             <td>First name : </td>

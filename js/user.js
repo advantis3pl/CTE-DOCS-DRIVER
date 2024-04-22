@@ -63,6 +63,10 @@ function loginHistory(){
     const username = document.getElementById("vu_fixed_username").value;
     window.location.replace(`loginHistory.php?id=${username}`);
 }
+function actionHistory(){
+    const userid = document.getElementById("vu_selectedUserId").value;
+    window.location.replace(`actionHistory.php?id=${userid}`);
+}
 function resetVUuserDetails(){
     document.getElementById("vu_fname").value = document.getElementById("vu_fixed_fname").value;
     document.getElementById("vu_lname").value = document.getElementById("vu_fixed_lname").value;

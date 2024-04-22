@@ -31,25 +31,27 @@ if(isset($_POST['deliveryNumber'])){
         if ($r->num_rows != 0) {
             while($action = $r->fetch_assoc()){
 
-                $actionUserId = $action['id'];
+                $actionUserId = $action['user'];
 
-                $actions[] = $action;
-
-                $q_user = "SELECT * FROM user WHERE id = ?";
-                $s_user = $conn->prepare($q_user);
-                $s_user->bind_param('i', $actionUserId);
-                $s_user->execute();
-                $r_user = $s_user->get_result();
-                if ($r_user->num_rows == 1) {
-                    $actionUser = $r_user->fetch_assoc();
-                    $actionUsername = $actionUser['username'];
-                    
-                    $action['user'] = $actionUsername;
-
+                if($action['user'] == 0){
+                    $action['user'] = "DMS";
                 }else{
-                    $action['user'] = "User not found";
+                    $q_user = "SELECT * FROM user WHERE id = ?";
+                    $s_user = $conn->prepare($q_user);
+                    $s_user->bind_param('i', $actionUserId);
+                    $s_user->execute();
+                    $r_user = $s_user->get_result();
+                    if ($r_user->num_rows == 1) {
+                        $actionUser = $r_user->fetch_assoc();
+                        $actionUsername = $actionUser['username'];
+                        $action['user'] = $actionUsername;
+    
+                    }else{
+                        $action['user'] = "User not found";
+                    }
                 }
 
+                $actions[] = $action;
             }
         }
 
