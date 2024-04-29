@@ -124,8 +124,9 @@ if(isset($_SESSION['user_id'])){
                             $userll_stmt->bind_param("ss", $dateString, $userSK);
                             $userll_stmt->execute();
 
-                            $userLoginHistory = "INSERT INTO login_history(user_sk, username, login_time) VALUES (?, ?, ?)";
-                            $userll_stmt = $conn->prepare($userLoginHistory);
+                            $qry = "INSERT INTO room_type (room_name, room_description, room_type, image, beds, wifi, bath, tv, air_con, view, balcony, f_price, h_price, b_price, price, max) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                            $userll_stmt = $conn->prepare($qry);
                             $userll_stmt->bind_param("sss", $userSK, $username, $dateString);
                             $userll_stmt->execute();
 
